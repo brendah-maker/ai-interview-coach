@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Interview Coach</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN for modern styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-Inter">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-blue-600">AI Interview Coach</h1>
+      <nav>
+        <ul class="flex space-x-6 text-gray-700 font-medium">
+          <li><a href="#" class="hover:text-blue-600">Home</a></li>
+          <li><a href="#" class="hover:text-blue-600">Features</a></li>
+          <li><a href="#" class="hover:text-blue-600">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Section -->
+  <main class="max-w-4xl mx-auto px-6 py-12">
+    <div class="bg-white shadow-lg rounded-lg p-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Prepare for Your Interview</h2>
+      <p class="text-gray-600 mb-6">Select your position or upload your CV and job description, and get AI-powered interview questions and tips.</p>
+
+      <!-- Form -->
+      <form id="interviewForm" class="space-y-6">
+
+        <!-- Job Position Selection -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Select Position</label>
+          <select id="position" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">-- Choose a position --</option>
+            <option value="software-engineer">Software Engineer</option>
+            <option value="data-analyst">Data Analyst</option>
+            <option value="product-manager">Product Manager</option>
+            <option value="sales-executive">Sales Executive</option>
+          </select>
+        </div>
+
+        <!-- CV Upload -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Upload CV</label>
+          <input type="file" id="cvUpload" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" accept=".pdf,.doc,.docx">
+        </div>
+
+        <!-- Job Description -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Job Description</label>
+          <textarea id="jobDescription" rows="5" placeholder="Paste job description here..." class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="button" id="prepareBtn" class="w-full bg-blue-600 text-white font-semibold p-3 rounded-lg hover:bg-blue-700 transition-colors">Prepare Interview</button>
+      </form>
+
+      <!-- AI Response Section -->
+      <div id="aiResponse" class="mt-10 hidden bg-gray-100 p-6 rounded-lg shadow-inner">
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">Your AI Interview Prep</h3>
+        <div id="questions" class="space-y-4 text-gray-700"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white shadow-inner mt-12">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-center text-gray-500">
+      &copy; 2026 AI Interview Coach. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    const prepareBtn = document.getElementById('prepareBtn');
+    const aiResponse = document.getElementById('aiResponse');
+    const questionsDiv = document.getElementById('questions');
+
+    prepareBtn.addEventListener('click', () => {
+      const position = document.getElementById('position').value;
+      const jobDesc = document.getElementById('jobDescription').value;
+
+      if(!position && !jobDesc) {
+        alert('Please select a position or paste a job description!');
+        return;
+      }
+
+      // For prototype, simulate AI response
+      const sampleQuestions = [
+        `Tell me about yourself for the ${position || 'role'}.`,
+        `Why are you interested in this position?`,
+        `Describe a challenging situation you faced and how you resolved it.`,
+        `What are your key strengths relevant to this role?`
+      ];
+
+      questionsDiv.innerHTML = sampleQuestions.map(q => `<p>• ${q}</p>`).join('');
+      aiResponse.classList.remove('hidden');
+    });
+  </script>
+
+</body>
+</html>
