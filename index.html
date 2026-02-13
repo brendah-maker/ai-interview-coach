@@ -4,118 +4,112 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Interview Coach</title>
-  <!-- Google Fonts -->
+
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN for modern styling -->
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
 </head>
-<body class="bg-gray-50 font-Inter">
+
+<body class="bg-gray-50">
 
   <!-- Header -->
-  <header class="bg-white shadow-md">
+  <header class="bg-white shadow">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <h1 class="text-2xl font-bold text-blue-600">AI Interview Coach</h1>
-      <nav>
-        <ul class="flex space-x-6 text-gray-700 font-medium">
-          <li><a href="#" class="hover:text-blue-600">Home</a></li>
-          <li><a href="#" class="hover:text-blue-600">Features</a></li>
-          <li><a href="#" class="hover:text-blue-600">About</a></li>
-        </ul>
+      <nav class="space-x-6 text-gray-700 font-medium">
+        <a href="#" class="hover:text-blue-600">Home</a>
+        <a href="#" class="hover:text-blue-600">Features</a>
+        <a href="#" class="hover:text-blue-600">About</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Section -->
+  <!-- Main -->
   <main class="max-w-4xl mx-auto px-6 py-12">
-    <div class="bg-white shadow-lg rounded-lg p-8">
-      <h2 class="text-3xl font-bold text-gray-800 mb-6">Prepare for Your Interview</h2>
-      <p class="text-gray-600 mb-6">Select your position or upload your CV and job description, and get AI-powered interview questions and tips.</p>
+    <div class="bg-white shadow-xl rounded-xl p-8">
 
-      <!-- Form -->
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">
+        Prepare for Your Interview with AI
+      </h2>
+
+      <p class="text-gray-600 mb-8">
+        Select a position or paste your job description to receive tailored interview questions, expectations, and guidance on how to answer them effectively.
+      </p>
+
       <form id="interviewForm" class="space-y-6">
 
-        <!-- Job Position Selection -->
+        <!-- Position -->
         <div>
-          <label class="block text-gray-700 font-semibold mb-2">Select Position</label>
-          <select id="position" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label class="block font-semibold mb-2">Select Position</label>
+          <select id="position" class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500">
             <option value="">-- Choose a position --</option>
-            <option value="software-engineer">Software Engineer</option>
-<option value="frontend-developer">Frontend Developer</option>
-<option value="backend-developer">Backend Developer</option>
-<option value="data-analyst">Data Analyst</option>
-<option value="data-scientist">Data Scientist</option>
-<option value="product-manager">Product Manager</option>
-<option value="project-manager">Project Manager</option>
-<option value="sales-executive">Sales Executive</option>
-<option value="marketing-manager">Marketing Manager</option>
-<option value="business-analyst">Business Analyst</option>
-<option value="hr-manager">HR Manager</option>
-<option value="customer-support">Customer Support</option>
-<option value="finance-officer">Finance Officer</option>
-<option value="operations-manager">Operations Manager</option>
-<option value="ui-ux-designer">UI/UX Designer</option>
-
+            <option value="Software Engineer">Software Engineer</option>
+            <option value="Frontend Developer">Frontend Developer</option>
+            <option value="Backend Developer">Backend Developer</option>
+            <option value="Data Analyst">Data Analyst</option>
+            <option value="Data Scientist">Data Scientist</option>
+            <option value="Product Manager">Product Manager</option>
+            <option value="Project Manager">Project Manager</option>
+            <option value="Business Analyst">Business Analyst</option>
+            <option value="Marketing Manager">Marketing Manager</option>
+            <option value="Sales Executive">Sales Executive</option>
+            <option value="HR Manager">HR Manager</option>
+            <option value="Customer Support">Customer Support</option>
+            <option value="Finance Officer">Finance Officer</option>
+            <option value="Operations Manager">Operations Manager</option>
+            <option value="UI/UX Designer">UI/UX Designer</option>
           </select>
         </div>
 
         <!-- CV Upload -->
         <div>
-          <label class="block text-gray-700 font-semibold mb-2">Upload CV</label>
-          <input type="file" id="cvUpload" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" accept=".pdf,.doc,.docx">
+          <label class="block font-semibold mb-2">Upload CV (Optional)</label>
+          <input type="file" id="cvUpload"
+            class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+            accept=".pdf,.doc,.docx">
         </div>
 
         <!-- Job Description -->
         <div>
-          <label class="block text-gray-700 font-semibold mb-2">Job Description</label>
-          <textarea id="jobDescription" rows="5" placeholder="Paste job description here..." class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          <label class="block font-semibold mb-2">Job Description</label>
+          <textarea id="jobDescription" rows="5"
+            placeholder="Paste job description here..."
+            class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"></textarea>
         </div>
 
-        <!-- Submit Button -->
-        <button type="button" id="prepareBtn" class="w-full bg-blue-600 text-white font-semibold p-3 rounded-lg hover:bg-blue-700 transition-colors">Prepare Interview</button>
+        <!-- Button -->
+        <button type="button" id="prepareBtn"
+          class="w-full bg-blue-600 text-white font-semibold p-3 rounded-lg hover:bg-blue-700 transition">
+          Generate Interview Prep
+        </button>
+
       </form>
 
-      <!-- AI Response Section -->
-      <div id="aiResponse" class="mt-10 hidden bg-gray-100 p-6 rounded-lg shadow-inner">
-        <h3 class="text-2xl font-bold text-gray-800 mb-4">Your AI Interview Prep</h3>
-        <div id="questions" class="space-y-4 text-gray-700"></div>
+      <!-- Loading -->
+      <div id="loading" class="hidden mt-8 text-blue-600 font-semibold">
+        Analyzing job description...
       </div>
+
+      <!-- AI Output -->
+      <div id="aiResponse"
+        class="hidden mt-10 bg-gray-100 p-6 rounded-xl shadow-inner">
+      </div>
+
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="bg-white shadow-inner mt-12">
-    <div class="max-w-7xl mx-auto px-6 py-6 text-center text-gray-500">
-      &copy; 2026 AI Interview Coach. All rights reserved.
-    </div>
+  <footer class="bg-white mt-12 py-6 text-center text-gray-500 shadow-inner">
+    © 2026 AI Interview Coach. All rights reserved.
   </footer>
 
-  <!-- JavaScript -->
-  <script>
-    const prepareBtn = document.getElementById('prepareBtn');
-    const aiResponse = document.getElementById('aiResponse');
-    const questionsDiv = document.getElementById('questions');
-
-    prepareBtn.addEventListener('click', () => {
-      const position = document.getElementById('position').value;
-      const jobDesc = document.getElementById('jobDescription').value;
-
-      if(!position && !jobDesc) {
-        alert('Please select a position or paste a job description!');
-        return;
-      }
-
-      // For prototype, simulate AI response
-      const sampleQuestions = [
-        `Tell me about yourself for the ${position || 'role'}.`,
-        `Why are you interested in this position?`,
-        `Describe a challenging situation you faced and how you resolved it.`,
-        `What are your key strengths relevant to this role?`
-      ];
-
-      questionsDiv.innerHTML = sampleQuestions.map(q => `<p>• ${q}</p>`).join('');
-      aiResponse.classList.remove('hidden');
-    });
-  </script>
-
+  <!-- Script -->
+  <script src="script.js"></script>
 </body>
 </html>
