@@ -1,91 +1,118 @@
-<script>
 const prepareBtn = document.getElementById('prepareBtn');
 const aiResponse = document.getElementById('aiResponse');
-const questionsDiv = document.getElementById('questions');
+const loading = document.getElementById('loading');
 
 prepareBtn.addEventListener('click', () => {
 
   const position = document.getElementById('position').value;
   const jobDesc = document.getElementById('jobDescription').value.toLowerCase();
 
-  if(!position && !jobDesc) {
-    alert('Please select a position or paste a job description!');
+  if (!position && !jobDesc) {
+    alert("Please select a position or paste a job description.");
     return;
   }
 
-  // Detect key skills from job description
-  const detectedSkills = [];
+  aiResponse.classList.add("hidden");
+  loading.classList.remove("hidden");
 
-  if(jobDesc.includes("python")) detectedSkills.push("Python");
-  if(jobDesc.includes("sql")) detectedSkills.push("SQL");
-  if(jobDesc.includes("communication")) detectedSkills.push("Communication");
-  if(jobDesc.includes("leadership")) detectedSkills.push("Leadership");
-  if(jobDesc.includes("sales")) detectedSkills.push("Sales Ability");
-  if(jobDesc.includes("analysis")) detectedSkills.push("Analytical Thinking");
-  if(jobDesc.includes("agile")) detectedSkills.push("Agile Methodology");
-  if(jobDesc.includes("customer")) detectedSkills.push("Customer Focus");
-  if(jobDesc.includes("excel")) detectedSkills.push("Excel");
-  if(jobDesc.includes("javascript")) detectedSkills.push("JavaScript");
+  setTimeout(() => {
 
-  const skillsOutput = detectedSkills.length > 0
-    ? detectedSkills.join(", ")
-    : "General professional competencies";
+    const skills = detectSkills(jobDesc);
+    const expectationsHTML = generateExpectations(skills);
+    const questionsHTML = generateQuestions(position, skills);
 
-  // Interviewer expectations
-  const expectations = `
-    <div class="bg-white p-4 rounded-lg shadow">
-      <h4 class="font-bold text-blue-600 mb-2">What Interviewers Expect</h4>
-      <ul class="list-disc ml-6 space-y-1">
-        <li>Clear understanding of the role requirements</li>
-        <li>Demonstration of relevant skills (${skillsOutput})</li>
-        <li>Problem-solving ability</li>
-        <li>Strong communication skills</li>
-        <li>Evidence of past impact and results</li>
+    aiResponse.innerHTML = `
+      ${expectationsHTML}
+      ${questionsHTML}
+    `;
+
+    loading.classList.add("hidden");
+    aiResponse.classList.remove("hidden");
+
+  }, 1200);
+});
+
+
+function detectSkills(text) {
+  const keywords = [
+    "python", "sql", "excel", "leadership", "communication",
+    "sales", "analysis", "agile", "customer", "javascript",
+    "react", "node", "finance", "marketing"
+  ];
+
+  return keywords.filter(word => text.includes(word));
+}
+
+
+function generateExpectations(skills) {
+
+  const skillsList = skills.length > 0
+    ? skills.map(s => `<li>${capitalize(s)}</li>`).join("")
+    : "<li>General professional competencies</li>";
+
+  return `
+    <div class="bg-white p-6 rounded-xl shadow mb-6">
+      <h3 class="text-xl font-bold text-blue-600 mb-3">
+        What Interviewers Expect
+      </h3>
+      <ul class="list-disc ml-6 space-y-1 text-gray-700">
+        <li>Clear understanding of the role</li>
+        <li>Strong problem-solving skills</li>
+        <li>Demonstrated impact in past roles</li>
+        <li>Effective communication</li>
+        ${skillsList}
       </ul>
     </div>
   `;
+}
 
-  // Sample questions with guidance
+
+function generateQuestions(position, skills) {
+
+  const role = position || "this role";
+  const skillsText = skills.length > 0
+    ? skills.map(s => capitalize(s)).join(", ")
+    : "relevant professional skills";
+
   const questions = [
     {
-      question: `Tell me about yourself and your experience related to ${position || "this role"}.`,
-      guidance: "Structure your answer using Present → Past → Future. Focus on achievements aligned with the job description."
+      q: `Tell me about yourself in relation to ${role}.`,
+      a: "Use Present → Past → Future. Highlight measurable achievements."
     },
     {
-      question: "Why are you interested in this role?",
-      guidance: "Connect your career goals with the company’s mission. Mention how your skills match their needs."
+      q: `Why are you interested in ${role}?`,
+      a: "Align your career goals with company objectives."
     },
     {
-      question: "Describe a challenge you faced and how you solved it.",
-      guidance: "Use the STAR method: Situation, Task, Action, Result. Quantify results where possible."
+      q: "Describe a challenge you solved.",
+      a: "Use the STAR method (Situation, Task, Action, Result)."
     },
     {
-      question: "What are your key strengths?",
-      guidance: `Highlight strengths related to ${skillsOutput}. Provide examples, not just claims.`
+      q: "What are your strengths?",
+      a: `Focus on ${skillsText} and provide real examples.`
     }
   ];
 
-  const questionsHTML = questions.map(q => `
-    <div class="bg-white p-4 rounded-lg shadow">
-      <p class="font-semibold text-gray-800 mb-2">${q.question}</p>
-      <p class="text-sm text-gray-600"><strong>How to answer:</strong> ${q.guidance}</p>
+  const html = questions.map(item => `
+    <div class="bg-white p-6 rounded-xl shadow mb-4">
+      <p class="font-semibold text-gray-800 mb-2">${item.q}</p>
+      <p class="text-sm text-gray-600">
+        <strong>How to answer:</strong> ${item.a}
+      </p>
     </div>
   `).join("");
 
-  questionsDiv.innerHTML = `
-    ${expectations}
-
-    <div class="bg-blue-50 p-4 rounded-lg shadow mt-4">
-      <h4 class="font-bold text-blue-600 mb-2">Key Skills Detected</h4>
-      <p>${skillsOutput}</p>
-    </div>
-
-    <div class="mt-6 space-y-4">
-      <h4 class="font-bold text-gray-800">Likely Interview Questions & How to Answer</h4>
-      ${questionsHTML}
+  return `
+    <div>
+      <h3 class="text-xl font-bold text-gray-800 mb-4">
+        Likely Interview Questions
+      </h3>
+      ${html}
     </div>
   `;
+}
 
-  aiResponse.classList.remove('hidden');
-});
-</script>
+
+function capitalize(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
