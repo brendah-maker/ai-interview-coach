@@ -4,19 +4,56 @@ document.addEventListener("DOMContentLoaded", function () {
   const aiResponse = document.getElementById("aiResponse");
   const loading = document.getElementById("loading");
 
-  prepareBtn.addEventListener("click", function () {
+  prepareBtn.addEventListener("click", handleGenerate);
+
+  // ======================================
+  // Main Handler
+  // ======================================
+  function handleGenerate() {
 
     const position = document.getElementById("position").value;
     const jobDesc = document.getElementById("jobDescription").value.toLowerCase();
-    const cvText = document.getElementById("cvText").value.toLowerCase();
+    const fileInput = document.getElementById("cvUpload");
 
-    if (!position && !jobDesc && !cvText) {
-      alert("Please provide job description or CV content.");
+    if (!position && !jobDesc && fileInput.files.length === 0) {
+      alert("Please select a position, paste a job description, or upload a CV.");
       return;
     }
 
     aiResponse.classList.add("hidden");
     loading.classList.remove("hidden");
+
+    if (fileInput.files.length > 0) {
+      readCV(fileInput.files[0], position, jobDesc);
+    } else {
+      processData(position, jobDesc, "");
+    }
+  }
+
+  // ======================================
+  // Read CV (TXT supported safely)
+  // ======================================
+  function readCV(file, position, jobDesc) {
+
+    if (!file.type.includes("text")) {
+      processData(position, jobDesc, "");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      const cvText = e.target.result.toLowerCase();
+      processData(position, jobDesc, cvText);
+    };
+
+    reader.readAsText(file);
+  }
+
+  // ======================================
+  // Core Processing
+  // ======================================
+  function processData(position, jobDesc, cvText) {
 
     setTimeout(function () {
 
@@ -32,35 +69,42 @@ document.addEventListener("DOMContentLoaded", function () {
       aiResponse.classList.remove("hidden");
 
     }, 1000);
-
-  });
-
-
-  // ==========================
-  // Skill Detection
-  // ==========================
-  function detectSkills(text) {
-
-    const keywords = [
-      "python", "sql", "excel", "leadership",
-      "communication", "sales", "analysis",
-      "agile", "customer", "javascript",
-      "react", "node", "finance",
-      "marketing", "management"
-    ];
-
-    return keywords.filter(word => text.includes(word));
   }
 
+  // ======================================
+  // Smarter Skill Detection
+  // ======================================
+  function detectSkills(text) {
 
-  // ==========================
-  // Interview Expectations
-  // ==========================
+    const keywordGroups = {
+      technical: ["python", "sql", "excel", "javascript", "react", "node"],
+      soft: ["leadership", "communication", "teamwork", "problem solving"],
+      business: ["sales", "marketing", "finance", "analysis", "management"],
+      agile: ["agile", "scrum", "kanban"],
+      customer: ["customer", "support", "service"]
+    };
+
+    let detected = [];
+
+    Object.values(keywordGroups).forEach(group => {
+      group.forEach(keyword => {
+        if (text.includes(keyword) && !detected.includes(keyword)) {
+          detected.push(keyword);
+        }
+      });
+    });
+
+    return detected;
+  }
+
+  // ======================================
+  // Expectations Section
+  // ======================================
   function generateExpectations(skills) {
 
-    const skillsList = skills.length > 0
+    const dynamicSkills = skills.length
       ? skills.map(s => `<li>${capitalize(s)}</li>`).join("")
-      : "<li>General professional competencies</li>";
+      : "<li>Relevant professional competencies</li>";
 
     return `
       <div class="bg-white p-6 rounded-xl shadow mb-6">
@@ -68,62 +112,96 @@ document.addEventListener("DOMContentLoaded", function () {
           What Interviewers Expect
         </h3>
         <ul class="list-disc ml-6 space-y-1 text-gray-700">
-          <li>Clear understanding of role responsibilities</li>
-          <li>Strong problem-solving ability</li>
-          <li>Evidence of measurable impact</li>
-          <li>Confidence and structured communication</li>
-          ${skillsList}
+          <li>Clear understanding of responsibilities</li>
+          <li>Results-driven mindset</li>
+          <li>Structured communication</li>
+          <li>Evidence of measurable achievements</li>
+          ${dynamicSkills}
         </ul>
       </div>
     `;
   }
 
-
-  // ==========================
-  // Question + Sample Answers
-  // ==========================
+  // ======================================
+  // Question Generator
+  // ======================================
   function generateQuestions(position, skills) {
 
     const role = position || "this role";
-    const skillsText = skills.length > 0
+    const skillsText = skills.length
       ? skills.map(s => capitalize(s)).join(", ")
-      : "your professional skills";
+      : "your professional strengths";
+
+    let roleSpecificQuestions = generateRoleSpecific(position);
 
     return `
       <div>
         <h3 class="text-xl font-bold text-gray-800 mb-4">
-          Likely Interview Questions & Example Answers
+          Likely Interview Questions & Sample Answers
         </h3>
 
         ${questionBlock(
-          `Tell me about yourself in relation to ${role}.`,
-          `Structure your answer: Present → Past → Future.`,
-          `I am a professional with experience in ${skillsText}. In my previous roles, I applied these skills to deliver measurable results. For example, I improved processes and collaborated with cross-functional teams to achieve performance targets. I am now looking to apply my expertise to contribute meaningfully in this ${role} position.`
+          `Tell me about yourself as it relates to ${role}.`,
+          "Use Present → Past → Future structure.",
+          generateDynamicIntro(role, skillsText)
         )}
 
         ${questionBlock(
           "Why are you interested in this role?",
-          "Align your skills with company needs.",
-          `I am interested in this role because it aligns with my background in ${skillsText}. The responsibilities outlined in the job description match my experience, and I am motivated to contribute value while continuing to grow professionally.`
+          "Connect your skills to the company's needs.",
+          `This role strongly aligns with my background in ${skillsText}. I am motivated by opportunities where I can contribute impact while continuing to grow professionally.`
         )}
 
         ${questionBlock(
-          "Describe a challenge you faced and how you solved it.",
-          "Use the STAR method.",
-          `In my previous role, I faced a challenge related to ${skillsText}. (Situation) I was responsible for resolving it. (Task) I implemented structured solutions and collaborated with stakeholders. (Action) As a result, we achieved improved efficiency and measurable performance gains. (Result)`
+          "Describe a challenge you solved.",
+          "Use the STAR method (Situation, Task, Action, Result).",
+          `In my previous role, I faced a challenge related to ${skillsText}. I analyzed the situation, implemented structured solutions, and collaborated effectively. As a result, we improved efficiency and achieved measurable success.`
         )}
 
-        ${questionBlock(
-          "What are your key strengths?",
-          "Provide examples, not just claims.",
-          `My key strengths include ${skillsText}. For instance, I demonstrated strong performance by applying these skills to deliver impactful results in my previous role.`
-        )}
+        ${roleSpecificQuestions}
 
       </div>
     `;
   }
 
+  // ======================================
+  // Role-Specific Questions
+  // ======================================
+  function generateRoleSpecific(position) {
 
+    if (!position) return "";
+
+    switch (position) {
+
+      case "Data Analyst":
+        return questionBlock(
+          "How do you ensure data accuracy?",
+          "Explain validation and cross-checking processes.",
+          "I ensure data integrity by cleaning datasets, validating sources, and cross-referencing outputs before presenting insights."
+        );
+
+      case "Frontend Developer":
+        return questionBlock(
+          "How do you optimize website performance?",
+          "Discuss lazy loading, code splitting, optimization.",
+          "I improve performance by minimizing bundle sizes, using lazy loading, and optimizing images and assets."
+        );
+
+      case "Customer Support":
+        return questionBlock(
+          "How do you handle difficult customers?",
+          "Show empathy and solution-focused thinking.",
+          "I remain calm, actively listen, and focus on resolving the issue efficiently while maintaining a positive customer experience."
+        );
+
+      default:
+        return "";
+    }
+  }
+
+  // ======================================
+  // Question Block Template
+  // ======================================
   function questionBlock(question, guidance, example) {
     return `
       <div class="bg-white p-6 rounded-xl shadow mb-4">
@@ -141,7 +219,23 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 
+  // ======================================
+  // Dynamic Intro Generator
+  // ======================================
+  function generateDynamicIntro(role, skillsText) {
 
+    const intros = [
+      `I am a results-oriented professional with experience in ${skillsText}. Throughout my career, I have applied these strengths to deliver measurable impact. I am now excited to bring that value into a ${role} position.`,
+      `My background includes hands-on experience in ${skillsText}. I’ve consistently focused on delivering results and continuous improvement, and I see this ${role} role as a strong next step.`,
+      `With a foundation in ${skillsText}, I have built a track record of solving problems and improving outcomes. I’m eager to apply that experience in this ${role} opportunity.`
+    ];
+
+    return intros[Math.floor(Math.random() * intros.length)];
+  }
+
+  // ======================================
+  // Helper
+  // ======================================
   function capitalize(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
