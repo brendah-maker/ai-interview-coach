@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StatFootball | Premium Live Hub</title>
+    <title>StatFootball | Premium Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -13,18 +13,24 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
+        
         #sidebar { transition: transform 0.3s ease-in-out; }
         .sidebar-open { transform: translateX(0) !important; }
         .active-league { background: #eef2ff; color: #4f46e5; border-right: 4px solid #4f46e5; font-weight: 700; }
         .active-tab { border-bottom: 3px solid #4f46e5; color: #4f46e5; }
+        
         .form-dot { width: 18px; height: 18px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; margin: 0 1px; color: white; flex-shrink: 0; }
         .form-W { background-color: #10b981; } .form-D { background-color: #94a3b8; } .form-L { background-color: #f43f5e; }
+        
         .card-shadow { box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.05); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
         .round-pill { flex-shrink: 0; padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 800; border: 1px solid #e2e8f0; transition: all 0.2s; cursor: pointer; background: white; white-space: nowrap; }
         .round-pill.active { background: #4f46e5; color: white; border-color: #4f46e5; }
+
         @keyframes live-pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         .animate-live { animation: live-pulse 2s infinite; }
+        .upcoming-glow { box-shadow: 0 0 20px rgba(79, 70, 229, 0.15); border: 2px solid #e0e7ff; }
     </style>
 </head>
 <body class="flex min-h-screen overflow-x-hidden">
@@ -35,27 +41,27 @@
         <button onclick="toggleSidebar()" class="text-slate-500 text-xl p-2"><i class="fa-solid fa-bars"></i></button>
     </div>
 
-    <!-- Sidebar Overlay -->
     <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden lg:hidden"></div>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-slate-200 flex flex-col z-50 -translate-x-full lg:translate-x-0 overflow-hidden transition-transform duration-300">
+    <!-- Sidebar: Top 15 Leagues -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-slate-200 flex flex-col z-50 -translate-x-full lg:translate-x-0 transition-transform duration-300">
         <div class="p-8 border-b border-slate-100 text-center hidden lg:block">
             <h1 class="text-2xl font-black text-indigo-600 italic leading-none">STAT<span class="text-slate-900">FOOTBALL</span></h1>
-            <p class="text-[9px] text-slate-400 font-bold mt-2 uppercase">Pro Analytics</p>
         </div>
         <nav id="leagueNav" class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-1 pt-20 lg:pt-4"></nav>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-screen overflow-y-auto no-scrollbar pt-16 lg:pt-0">
-        <header class="px-6 lg:px-8 py-6 sticky top-0 bg-white/90 backdrop-blur-md z-30 border-b border-slate-100 text-center lg:text-left">
+        <header class="px-6 lg:px-8 py-6 sticky top-0 bg-white/90 backdrop-blur-md z-30 border-b border-slate-100">
             <div class="flex flex-col lg:flex-row justify-between items-center mb-6">
                 <div class="mb-4 lg:mb-0">
                     <div class="flex items-center justify-center lg:justify-start space-x-3 text-indigo-500 text-[10px] font-black uppercase tracking-widest mb-1">
                         <span id="headerLeague">...</span> <span class="text-slate-300">|</span> 
                         <select id="seasonSelector" onchange="changeSeason(this.value)" class="bg-indigo-50 text-indigo-600 border-none outline-none font-black cursor-pointer rounded px-1">
-                            <option value="2025">2025/26</option><option value="2024">2024/25</option><option value="2023">2023/24</option>
+                            <option value="2025">Season 2025/26</option>
+                            <option value="2024">Season 2024/25</option>
+                            <option value="2023">Season 2023/24</option>
                         </select>
                     </div>
                     <h2 id="viewTitle" class="text-2xl lg:text-3xl font-extrabold text-slate-900 leading-none">Dashboard</h2>
@@ -64,30 +70,23 @@
                 <!-- AD: BANNER 468x60 -->
                 <div class="hidden sm:block">
                     <script>
-                        atOptions = {
-                          'key' : 'e130bbce1f75b93c23c252d625899704',
-                          'format' : 'iframe',
-                          'height' : 60,
-                          'width' : 468,
-                          'params' : {}
-                        };
+                        atOptions = { 'key' : 'e130bbce1f75b93c23c252d625899704', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
                     </script>
                     <script src="https://www.highperformanceformat.com/e130bbce1f75b93c23c252d625899704/invoke.js"></script>
                 </div>
             </div>
-
-            <nav class="flex space-x-6 overflow-x-auto no-scrollbar justify-center lg:justify-start">
+            
+            <nav class="flex space-x-6 overflow-x-auto no-scrollbar">
                 <button onclick="switchTab('summary')" id="tab-summary" class="pb-3 text-xs font-bold text-slate-400 active-tab whitespace-nowrap">Summary</button>
                 <button onclick="switchTab('matches')" id="tab-matches" class="pb-3 text-xs font-bold text-slate-400 whitespace-nowrap">Fixtures & Live</button>
                 <button onclick="switchTab('players')" id="tab-players" class="pb-3 text-xs font-bold text-slate-400 whitespace-nowrap">Players</button>
-                <button onclick="switchTab('predictions')" id="tab-predictions" class="pb-3 text-xs font-bold text-slate-400 whitespace-nowrap">Predictions</button>
+                <a href="blogs.html" class="pb-3 text-xs font-bold text-slate-400 whitespace-nowrap hover:text-indigo-600 transition">Blogs</a>
             </nav>
         </header>
 
         <div class="px-4 lg:px-8 py-6 space-y-8">
-            
             <!-- SUMMARY VIEW -->
-            <div id="view-summary" class="space-y-8">
+            <div id="view-summary" class="space-y-6">
                 <section class="bg-white rounded-2xl border border-slate-200 overflow-hidden card-shadow">
                     <div class="overflow-x-auto no-scrollbar">
                         <table class="w-full text-left min-w-[600px]">
@@ -97,46 +96,76 @@
                             <tbody id="standingsBody" class="divide-y divide-slate-100 text-sm"></tbody>
                         </table>
                     </div>
-                    <button onclick="toggleStandings()" class="w-full py-4 text-[10px] font-black text-indigo-600 uppercase border-t border-slate-100">Load Full Standings</button>
+                    <button onclick="toggleStandings()" class="w-full py-4 text-[10px] font-black text-indigo-600 hover:bg-indigo-50 transition uppercase border-t border-slate-100">Toggle Full Table</button>
                 </section>
 
-                <!-- AD: NATIVE BANNER -->
-                <div class="w-full flex justify-center py-4 bg-slate-100/50 rounded-3xl border-2 border-dashed border-slate-200">
-                    <script async="async" data-cfasync="false" src="https://pl29497622.effectivecpmnetwork.com/86dde6e69d54b79a8138b872b9acb018/invoke.js"></script>
-                    <div id="container-86dde6e69d54b79a8138b872b9acb018"></div>
-                </div>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Goals <i class="fa-solid fa-fire text-orange-400"></i></h4><div id="topScorers" class="space-y-1"></div></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Top Goals <i class="fa-solid fa-fire text-orange-400"></i></h4><div id="topScorers" class="space-y-1"></div></div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Assists <i class="fa-solid fa-magic text-indigo-400"></i></h4><div id="topAssists" class="space-y-1"></div></div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Yellows <i class="fa-solid fa-copy text-amber-400"></i></h4><div id="topYellows" class="space-y-1"></div></div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Reds <i class="fa-solid fa-square text-rose-500"></i></h4><div id="topReds" class="space-y-1"></div></div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">GA (Defense) <i class="fa-solid fa-shield text-emerald-500"></i></h4><div id="topSheets" class="space-y-1"></div></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Clean Sheets <i class="fa-solid fa-shield text-emerald-500"></i></h4><div id="topSheets" class="space-y-1"></div></div>
                 </div>
             </div>
 
             <!-- MATCHES VIEW -->
-            <div id="view-matches" class="hidden space-y-4">
+            <div id="view-matches" class="hidden space-y-6">
+                <!-- AD: NATIVE BANNER IN MATCHES -->
+                <div class="w-full flex justify-center py-2 bg-slate-50 rounded-2xl border border-slate-100">
+                    <script async="async" data-cfasync="false" src="https://pl29497622.effectivecpmnetwork.com/86dde6e69d54b79a8138b872b9acb018/invoke.js"></script>
+                    <div id="container-86dde6e69d54b79a8138b872b9acb018"></div>
+                </div>
+
                 <div class="flex items-center space-x-3 overflow-x-auto pb-4 no-scrollbar" id="roundRibbon"></div>
+                
+                <div id="featuredMatch" class="w-full"></div>
                 <div id="matchDayDisplay" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
             </div>
 
             <!-- PLAYERS VIEW -->
-            <div id="view-players" class="hidden space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div id="view-players" class="hidden space-y-8">
+                <!-- AD: NATIVE BANNER IN PLAYERS -->
+                <div class="w-full flex justify-center py-2 bg-indigo-50/30 rounded-2xl border border-indigo-100">
+                    <div id="container-players-ad">
+                         <!-- You can reuse the container ID or use another code here -->
+                         <div id="container-86dde6e69d54b79a8138b872b9acb018-copy"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-4 space-y-6">
-                        <div class="bg-indigo-600 p-6 rounded-2xl text-white shadow-lg"><h4 class="text-[10px] font-black uppercase opacity-70 mb-4 tracking-widest">MVP Candidates</h4><div id="mvpPlayer"></div></div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 flex justify-between">Defensive Rocks <i class="fa-solid fa-shield-halved text-slate-800"></i></h4>
+                            <div id="bestDefenders" class="space-y-3"></div>
+                        </div>
                     </div>
                     <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 card-shadow overflow-hidden">
-                        <table class="w-full text-left"><thead class="text-[10px] text-slate-400 font-black uppercase bg-slate-50"><tr><th class="px-6 py-4">Player</th><th class="px-4 py-4">Club</th><th class="px-4 py-4 text-center">Rating</th></tr></thead><tbody id="playerFullTable" class="divide-y divide-slate-50 text-sm"></tbody></table>
+                        <div class="p-5 border-b border-slate-50 bg-slate-50/30 font-black text-xs uppercase text-slate-800 tracking-wider">Top Performing Squads</div>
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="w-full text-left min-w-[500px]">
+                                <thead class="text-[10px] text-slate-400 font-black uppercase bg-slate-50">
+                                    <tr><th class="px-6 py-4">Player</th><th class="px-4 py-4">Club</th><th class="px-4 py-4 text-center">Goals</th><th class="px-4 py-4 text-center">Rating</th></tr>
+                                </thead>
+                                <tbody id="playerFullTable" class="divide-y divide-slate-50 text-sm"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- PREDICTIONS VIEW -->
-            <div id="view-predictions" class="hidden"><div id="predictionDisplay"></div></div>
         </div>
     </main>
+
+    <!-- Modal: More Details (H2H) -->
+    <div id="detailsModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-900"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div class="p-8 text-center border-b border-slate-50">
+                <h3 class="text-xl font-black text-slate-900">Head-to-Head</h3>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Previous Meetings & Scores</p>
+            </div>
+            <div id="h2hList" class="p-6 max-h-[400px] overflow-y-auto no-scrollbar space-y-4"></div>
+        </div>
+    </div>
 
     <script>
         const CONFIG = { KEY: "65a3207dce4446073729a1e509ba3278", BASE: "https://v3.football.api-sports.io" };
@@ -160,10 +189,7 @@
             } catch (e) { return []; }
         }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('sidebar-open');
-            document.getElementById('sidebarOverlay').classList.toggle('hidden');
-        }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('sidebar-open'); document.getElementById('sidebarOverlay').classList.toggle('hidden'); }
 
         async function switchTab(t) {
             state.tab = t;
@@ -181,54 +207,57 @@
             state.leagueId = id; renderSidebar();
             if (window.innerWidth < 1024) document.getElementById('sidebar').classList.remove('sidebar-open');
             document.getElementById('sidebarOverlay').classList.add('hidden');
-            
             const res = await api(`standings?league=${id}&season=${state.season}`);
             if (res && res[0]) {
                 state.standings = res[0].league.standings[0];
                 const league = LEAGUES.find(l => l.id === id);
                 document.getElementById('headerLeague').innerText = league.name;
                 document.getElementById('viewTitle').innerText = `${league.name}`;
-                renderStandings();
-                loadStats();
+                renderStandings(); loadStats();
             }
         }
 
         function renderStandings() {
             const data = state.expanded ? state.standings : state.standings.slice(0, 10);
-            document.getElementById('standingsBody').innerHTML = data.map(t => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="px-6 py-4 font-black text-slate-300 text-[10px]">${t.rank}</td>
-                    <td class="px-4 py-4 flex items-center font-bold text-slate-700 text-xs"><img src="${t.team.logo}" class="w-5 h-5 mr-3"> ${t.team.name}</td>
-                    <td class="px-4 py-4 text-center text-xs">${t.all.played}</td>
-                    <td class="px-2 py-4 text-center font-bold text-emerald-500 text-xs">${t.all.win}</td>
-                    <td class="px-2 py-4 text-center font-bold text-rose-400 text-xs">${t.all.lose}</td>
-                    <td class="px-4 py-4 text-center font-black text-indigo-600 text-xs">${t.points}</td>
-                    <td class="px-6 py-4 text-right">${(t.form || "").split('').map(f => `<span class="form-dot form-${f}">${f}</span>`).join('')}</td>
-                </tr>`).join('');
+            document.getElementById('standingsBody').innerHTML = data.map(t => `<tr class="hover:bg-indigo-50/50 transition"><td class="px-6 py-4 font-black text-slate-300 text-[10px]">${t.rank}</td><td class="px-4 py-4 flex items-center font-bold text-slate-700 text-xs"><img src="${t.team.logo}" class="w-5 h-5 mr-3"><span class="truncate max-w-[120px]">${t.team.name}</span></td><td class="px-4 py-4 text-center text-xs">${t.all.played}</td><td class="px-2 py-4 text-center font-bold text-emerald-500 text-xs">${t.all.win}</td><td class="px-2 py-4 text-center font-bold text-rose-400 text-xs">${t.all.lose}</td><td class="px-4 py-4 text-center font-black text-indigo-600 text-xs">${t.points}</td><td class="px-6 py-4 text-right whitespace-nowrap">${(t.form || "").split('').map(f => `<span class="form-dot form-${f}">${f}</span>`).join('')}</td></tr>`).join('');
         }
 
         function toggleStandings() { state.expanded = !state.expanded; renderStandings(); }
 
         async function loadPlayersData() {
             const top = await api(`players/topscorers?league=${state.leagueId}&season=${state.season}`);
-            if(top && top[0]) {
-                const mvp = top[0];
-                document.getElementById('mvpPlayer').innerHTML = `<div class="flex items-center space-x-4"><img src="${mvp.player.photo}" class="w-12 h-12 rounded-xl border border-white/20"><div><p class="text-sm font-black">${mvp.player.name}</p><p class="text-[10px] opacity-60">${mvp.statistics[0].team.name}</p></div></div>`;
-            }
-            document.getElementById('playerFullTable').innerHTML = top.map(p => `<tr class="hover:bg-slate-50 transition"><td class="px-6 py-4 flex items-center space-x-3"><img src="${p.player.photo}" class="w-6 h-6 rounded-lg"><span class="font-bold text-slate-800 text-xs">${p.player.name}</span></td><td class="px-4 py-4 text-xs font-medium text-slate-500">${p.statistics[0].team.name}</td><td class="px-4 py-4 text-center"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded text-[10px] font-black">${p.statistics[0].games.rating || '---'}</span></td></tr>`).join('');
+            document.getElementById('playerFullTable').innerHTML = top.map(p => `<tr class="hover:bg-slate-50 transition"><td class="px-6 py-4 flex items-center space-x-3"><img src="${p.player.photo}" class="w-8 h-8 rounded-lg"><span class="font-bold text-slate-800 text-xs">${p.player.name}</span></td><td class="px-4 py-4 text-xs font-medium text-slate-500">${p.statistics[0].team.name}</td><td class="px-4 py-4 text-center font-black text-indigo-600 text-xs">${p.statistics[0].goals.total}</td><td class="px-4 py-4 text-center"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-[10px] font-black">${p.statistics[0].games.rating || '---'}</span></td></tr>`).join('');
+            
+            // Best Defenders logic (Mock logic using rating + GA from standings)
+            document.getElementById('bestDefenders').innerHTML = state.standings.slice(0,5).map(t => `<div class="flex justify-between items-center text-[10px] p-2 bg-slate-50 rounded-xl mb-1"><span class="font-bold text-slate-700">${t.team.name} Defensive Line</span><span class="font-black text-slate-900">${t.all.goals.against} GA</span></div>`).join('');
         }
 
         async function loadRounds() {
             const rounds = await api(`fixtures/rounds?league=${state.leagueId}&season=${state.season}`);
             const current = await api(`fixtures/rounds?league=${state.leagueId}&season=${state.season}&current=true`);
             const target = current[0] || rounds[rounds.length-1];
-            document.getElementById('roundRibbon').innerHTML = rounds.map(r => `<div onclick="loadRoundFixtures('${r}')" class="round-pill ${r === target ? 'active' : ''}">${r.replace('Regular Season - ', 'Rd ')}</div>`).join('');
+            document.getElementById('roundRibbon').innerHTML = rounds.map(r => `<div onclick="loadRoundFixtures('${r}')" data-rid="${r}" class="round-pill ${r === target ? 'active' : ''}">${r.replace('Regular Season - ', 'Rd ')}</div>`).join('');
             loadRoundFixtures(target);
         }
 
         async function loadRoundFixtures(roundName) {
-            document.querySelectorAll('.round-pill').forEach(p => p.classList.toggle('active', p.innerText.includes(roundName.split('-').pop().trim())));
+            document.querySelectorAll('.round-pill').forEach(p => p.classList.toggle('active', p.dataset.rid === roundName));
             const fixtures = await api(`fixtures?league=${state.leagueId}&season=${state.season}&round=${roundName}`);
+            
+            // Find first NS for Featured Match
+            const upcoming = fixtures.find(m => m.fixture.status.short === 'NS');
+            if(upcoming) {
+                document.getElementById('featuredMatch').innerHTML = `
+                <div class="bg-indigo-600 p-8 rounded-3xl text-white upcoming-glow mb-8 text-center">
+                    <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-60 mb-6 italic">Next Featured Matchday</p>
+                    <div class="flex justify-center items-center space-x-10">
+                        <div><img src="${upcoming.teams.home.logo}" class="w-16 h-16 mb-2 mx-auto"><p class="text-sm font-black">${upcoming.teams.home.name}</p></div>
+                        <div class="bg-white/10 px-6 py-2 rounded-2xl border border-white/10"><p class="text-2xl font-black">${new Date(upcoming.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</p><p class="text-[9px] font-bold opacity-50 uppercase">${new Date(upcoming.fixture.date).toLocaleDateString()}</p></div>
+                        <div><img src="${upcoming.teams.away.logo}" class="w-16 h-16 mb-2 mx-auto"><p class="text-sm font-black">${upcoming.teams.away.name}</p></div>
+                    </div>
+                </div>`;
+            }
+
             document.getElementById('matchDayDisplay').innerHTML = fixtures.map(m => {
                 const isFT = m.fixture.status.short === 'FT';
                 const isLive = ['1H','2H','HT','ET','P'].includes(m.fixture.status.short);
@@ -239,9 +268,27 @@
                         <div class="px-2"><div class="text-lg font-black ${isLive ? 'text-emerald-500' : isFT ? 'text-indigo-600' : 'text-slate-300'}">${isLive || isFT ? m.goals.home + '-' + m.goals.away : new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>
                         <div class="flex-1 overflow-hidden"><img src="${m.teams.away.logo}" class="w-8 h-8 mx-auto mb-1"><p class="text-[9px] font-bold truncate">${m.teams.away.name}</p></div>
                     </div>
+                    <div class="mt-4 pt-3 border-t border-slate-50"><button onclick="getH2H(${m.teams.home.id}, ${m.teams.away.id})" class="text-[9px] font-black text-slate-400 hover:text-indigo-600 transition uppercase tracking-tighter">More Details + H2H</button></div>
                 </div>`;
             }).join('');
         }
+
+        async function getH2H(h, a) {
+            const modal = document.getElementById('detailsModal');
+            document.getElementById('h2hList').innerHTML = '<div class="py-10 text-center animate-pulse text-[10px] font-bold text-slate-300 uppercase">Fetching Match History...</div>';
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            
+            const history = await api(`fixtures/headtohead?h2h=${h}-${a}&last=6`);
+            document.getElementById('h2hList').innerHTML = history.map(m => `
+                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+                    <span class="text-[9px] font-bold text-slate-400">${new Date(m.fixture.date).getFullYear()}</span>
+                    <div class="flex-1 text-center font-bold text-xs">
+                        ${m.teams.home.name} <span class="bg-indigo-100 px-2 rounded mx-1 text-indigo-700">${m.goals.home}-${m.goals.away}</span> ${m.teams.away.name}
+                    </div>
+                </div>`).join('') || '<p class="text-center text-xs text-slate-400">No past meetings found.</p>';
+        }
+
+        function closeModal() { document.getElementById('detailsModal').classList.add('hidden'); document.getElementById('detailsModal').classList.remove('flex'); }
 
         async function loadStats() {
             const season = state.season, id = state.leagueId;
@@ -253,7 +300,7 @@
             renderMini('topAssists', assists?.slice(0,5), 'goals.assists', 'text-indigo-600');
             renderMini('topYellows', yellows?.slice(0,5), 'cards.yellow', 'text-amber-500');
             renderMini('topReds', reds?.slice(0,5), 'cards.red', 'text-rose-500');
-            document.getElementById('topSheets').innerHTML = state.standings.slice(0,5).map(t => `<div class="flex justify-between items-center text-[10px] p-2 bg-slate-50 rounded-xl mb-1"><span class="font-bold truncate w-24">${t.team.name}</span><span class="font-black text-emerald-600">${t.all.goals.against} GA</span></div>`).join('');
+            document.getElementById('topSheets').innerHTML = state.standings.slice(0,5).map(t => `<div class="flex justify-between items-center text-[10px] p-2 bg-slate-50 rounded-xl mb-1"><span class="font-bold truncate w-24 text-slate-600">${t.team.name}</span><span class="font-black text-emerald-600">${t.all.goals.against} GA</span></div>`).join('');
         }
 
         function renderMini(id, d, p, c) {
