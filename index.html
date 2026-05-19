@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StatFootball | Live & Predictions</title>
+    <title>StatFootball | Pro Dashboard 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,8 +18,6 @@
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .loading-shimmer { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        @keyframes pulse-emerald { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .animate-pulse-live { animation: pulse-emerald 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     </style>
 </head>
 <body class="flex min-h-screen overflow-hidden">
@@ -27,43 +25,54 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-white border-r border-slate-200 hidden lg:flex flex-col flex-shrink-0 z-20">
         <div class="p-8 border-b border-slate-100">
-            <h1 class="text-2xl font-black text-indigo-600 italic">STAT<span class="text-slate-900">FOOTBALL</span></h1>
-            <p class="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-widest">Global Live Center</p>
+            <h1 class="text-2xl font-black text-indigo-600 italic leading-none">STAT<span class="text-slate-900">FOOTBALL</span></h1>
+            <p class="text-[10px] text-slate-400 font-bold mt-2 uppercase tracking-widest">Global Live Center</p>
         </div>
         <nav id="leagueNav" class="flex-1 overflow-y-auto custom-scroll p-4 space-y-1"></nav>
-        <div class="p-4 border-t border-slate-100 bg-slate-50/50 text-center">
-            <span class="text-[10px] font-bold text-emerald-600 uppercase">● Systems Operational</span>
+        <div class="p-6 border-t border-slate-100 bg-slate-50/50">
+            <div class="flex items-center space-x-2 text-[10px] font-bold text-emerald-600 uppercase">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>API Connection Stable</span>
+            </div>
         </div>
     </aside>
 
     <!-- Main -->
     <main class="flex-1 flex flex-col h-screen overflow-y-auto custom-scroll">
-        <!-- Header & Tabs -->
-        <header class="p-8 pb-0 sticky top-0 bg-slate-50/90 backdrop-blur-md z-10">
-            <div class="flex justify-between items-end mb-6">
+        <!-- Header -->
+        <header class="p-8 pb-0 sticky top-0 bg-white/90 backdrop-blur-md z-10 border-b border-slate-100">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6">
                 <div>
-                    <div class="flex items-center space-x-2 text-indigo-500 text-[11px] font-black uppercase tracking-widest mb-1">
-                        <span id="headerLeague">...</span> <span class="text-slate-300">|</span> <span id="headerSeason">Season 2025/2026</span>
+                    <div class="flex items-center space-x-3 text-indigo-500 text-[11px] font-black uppercase tracking-widest mb-1">
+                        <span id="headerLeague">...</span> 
+                        <span class="text-slate-300">|</span> 
+                        <!-- SEASON DROP DOWN -->
+                        <div class="relative inline-block">
+                            <select id="seasonSelector" onchange="changeSeason(this.value)" class="bg-indigo-50 text-indigo-600 border-none outline-none font-black text-[11px] cursor-pointer rounded px-1">
+                                <option value="2025">Season 2025/26</option>
+                                <option value="2024">Season 2024/25</option>
+                                <option value="2023">Season 2023/24</option>
+                            </select>
+                        </div>
                     </div>
-                    <h2 id="viewTitle" class="text-4xl font-extrabold text-slate-900 tracking-tight">Dashboard</h2>
+                    <h2 id="viewTitle" class="text-4xl font-extrabold text-slate-900 tracking-tight leading-none">Dashboard</h2>
                 </div>
-                <div id="liveIndicator" class="hidden flex items-center bg-emerald-50 text-emerald-600 px-4 py-2 rounded-2xl text-[11px] font-black border border-emerald-100 animate-pulse-live">
-                    LIVE MATCHES DETECTED
+                <div class="mt-4 md:mt-0 flex space-x-3">
+                   <div id="liveBadge" class="hidden flex items-center bg-emerald-50 text-emerald-600 px-4 py-2 rounded-2xl text-[10px] font-black border border-emerald-100">LIVE MATCHES</div>
                 </div>
             </div>
             
-            <nav class="flex space-x-8 border-b border-slate-200">
+            <nav class="flex space-x-8">
                 <button onclick="switchTab('summary')" id="tab-summary" class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-900 transition-all active-tab">Summary</button>
-                <button onclick="switchTab('matches')" id="tab-matches" class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-900 transition-all">Live & Upcoming</button>
+                <button onclick="switchTab('matches')" id="tab-matches" class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-900 transition-all">Matches</button>
                 <button onclick="switchTab('predictions')" id="tab-predictions" class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-900 transition-all">Predictions</button>
             </nav>
         </header>
 
-        <!-- View Containers -->
-        <div class="p-8 pt-6 space-y-8">
+        <div class="p-8 space-y-8">
             
             <!-- SUMMARY VIEW -->
-            <div id="view-summary" class="space-y-8">
+            <div id="view-summary" class="space-y-8 animate-in fade-in duration-500">
                 <section class="bg-white rounded-3xl border border-slate-200 overflow-hidden card-shadow">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left">
@@ -74,8 +83,9 @@
                                     <th class="px-4 py-5 text-center">MP</th>
                                     <th class="px-2 py-5 text-center text-emerald-600">W</th>
                                     <th class="px-2 py-5 text-center text-rose-500">L</th>
-                                    <th class="px-4 py-5 text-center">Pts</th>
-                                    <th class="px-8 py-5 text-right">Form</th>
+                                    <th class="px-4 py-5 text-center">GD</th>
+                                    <th class="px-4 py-5 text-center text-indigo-600">Pts</th>
+                                    <th class="px-8 py-5 text-right">Last 5</th>
                                 </tr>
                             </thead>
                             <tbody id="standingsBody" class="divide-y divide-slate-100 text-sm text-slate-600"></tbody>
@@ -84,52 +94,49 @@
                 </section>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="bg-white p-6 rounded-3xl border border-slate-200 card-shadow">
-                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4">Top Scorers</h4>
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 flex justify-between">Top Scorers <i class="fa-solid fa-fire text-orange-400"></i></h4>
                         <div id="topScorers" class="space-y-3"></div>
                     </div>
                     <div class="bg-white p-6 rounded-3xl border border-slate-200 card-shadow">
-                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4">Top Assists</h4>
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 flex justify-between">Assists <i class="fa-solid fa-magic text-indigo-400"></i></h4>
                         <div id="topAssists" class="space-y-3"></div>
                     </div>
                     <div class="bg-white p-6 rounded-3xl border border-slate-200 card-shadow">
-                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4">Clean Sheets</h4>
-                        <div id="topSheets" class="space-y-3"></div>
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 flex justify-between">Medical <i class="fa-solid fa-truck-medical text-rose-400"></i></h4>
+                        <div id="injuryList" class="space-y-3"></div>
                     </div>
                     <div class="bg-white p-6 rounded-3xl border border-slate-200 card-shadow">
-                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4">Yellow Cards</h4>
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 flex justify-between">Discipline <i class="fa-solid fa-clone text-amber-400"></i></h4>
                         <div id="topYellows" class="space-y-3"></div>
                     </div>
                 </div>
             </div>
 
             <!-- MATCHES VIEW -->
-            <div id="view-matches" class="hidden space-y-8">
+            <div id="view-matches" class="hidden space-y-8 animate-in fade-in duration-500">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <!-- Live Scores -->
                     <div class="lg:col-span-5 space-y-4">
-                        <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest">Live Scores</h3>
+                        <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest">Live Updates</h3>
                         <div id="liveList" class="space-y-4"></div>
                     </div>
-                    <!-- Upcoming -->
                     <div class="lg:col-span-7 space-y-4">
-                        <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest">Upcoming Fixtures</h3>
+                        <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest">Upcoming</h3>
                         <div id="upcomingList" class="space-y-3"></div>
                     </div>
                 </div>
             </div>
 
             <!-- PREDICTIONS VIEW -->
-            <div id="view-predictions" class="hidden space-y-8">
-                <div class="bg-indigo-600 rounded-3xl p-10 text-white flex flex-col items-center text-center">
-                    <i class="fa-solid fa-brain text-4xl mb-4 opacity-50"></i>
-                    <h3 class="text-2xl font-black">AI Prediction Engine</h3>
-                    <p class="text-indigo-100 text-sm mt-2 max-w-md">Select an upcoming match from the "Matches" tab to generate a detailed tactical win-probability report.</p>
+            <div id="view-predictions" class="hidden space-y-8 animate-in slide-in-from-bottom-5 duration-500">
+                <div id="predictionPrompt" class="bg-indigo-600 rounded-3xl p-12 text-white text-center shadow-xl">
+                    <i class="fa-solid fa-robot text-4xl mb-4 opacity-50"></i>
+                    <h3 class="text-2xl font-black">Tactical Prediction Hub</h3>
+                    <p class="text-indigo-100 text-sm mt-2 max-w-sm mx-auto">Analyze matchups from the Matches tab to view head-to-head records and win probability.</p>
                 </div>
-                <div id="predictionDisplay" class="grid grid-cols-1 lg:grid-cols-12 gap-8 hidden">
-                    <!-- Prediction Data injected here -->
+                <div id="predictionDisplay" class="hidden space-y-8">
+                    <!-- Dynamic H2H and Predictor cards injected here -->
                 </div>
             </div>
-
         </div>
     </main>
 
@@ -144,28 +151,35 @@
             { id: 140, name: "La Liga", country: "ESP" },
             { id: 78, name: "Bundesliga", country: "GER" },
             { id: 135, name: "Serie A", country: "ITA" },
-            { id: 61, name: "Ligue 1", country: "FRA" }
+            { id: 61, name: "Ligue 1", country: "FRA" },
+            { id: 253, name: "MLS", country: "USA" }
         ];
 
-        let state = { leagueId: 39, season: 2025, activeTab: 'summary' };
+        let state = { leagueId: 39, season: 2025, tab: 'summary' };
 
         async function api(endpoint) {
-            const res = await fetch(`${CONFIG.BASE}/${endpoint}`, {
-                headers: { "x-apisports-key": CONFIG.KEY, "x-rapidapi-host": "v3.football.api-sports.io" }
-            });
-            const data = await res.json();
-            return data.response;
+            try {
+                const res = await fetch(`${CONFIG.BASE}/${endpoint}`, {
+                    headers: { "x-apisports-key": CONFIG.KEY, "x-rapidapi-host": "v3.football.api-sports.io" }
+                });
+                const data = await res.json();
+                return data.response;
+            } catch (e) { return []; }
         }
 
         async function switchTab(tabId) {
-            state.activeTab = tabId;
+            state.tab = tabId;
             document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.remove('active-tab'));
             document.getElementById(`tab-${tabId}`).classList.add('active-tab');
-            
             document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
             document.getElementById(`view-${tabId}`).classList.remove('hidden');
-
+            
             if (tabId === 'matches') loadMatches();
+        }
+
+        function changeSeason(year) {
+            state.season = parseInt(year);
+            loadDashboard(state.leagueId);
         }
 
         async function loadDashboard(id) {
@@ -174,22 +188,23 @@
             document.getElementById('headerLeague').innerText = league.name;
             renderSidebar();
 
-            // Standings Fallback logic
-            let standings = await api(`standings?league=${id}&season=2025`);
-            if (!standings || standings.length === 0) {
-                state.season = 2024;
-                standings = await api(`standings?league=${id}&season=2024`);
+            // Clear & Fetch Standings
+            document.getElementById('standingsBody').innerHTML = '<tr><td colspan="8" class="py-20 loading-shimmer"></td></tr>';
+            const standings = await api(`standings?league=${id}&season=${state.season}`);
+            
+            if (standings && standings[0]) {
+                renderStandings(standings[0].league.standings[0]);
+            } else {
+                document.getElementById('standingsBody').innerHTML = '<tr><td colspan="8" class="py-20 text-center text-slate-400 italic">No data found for this season</td></tr>';
             }
-            document.getElementById('headerSeason').innerText = `Season ${state.season}/${state.season+1}`;
-            renderStandings(standings[0]?.league.standings[0] || []);
 
             // Stats
             loadLeaderboards();
-            loadMatches(); // Check for live matches count for the badge
+            loadLiveStatus();
         }
 
         function renderStandings(data) {
-            document.getElementById('standingsBody').innerHTML = data.slice(0,10).map(t => `
+            document.getElementById('standingsBody').innerHTML = data.slice(0, 10).map(t => `
                 <tr class="hover:bg-slate-50 transition">
                     <td class="px-8 py-5 font-black text-slate-400 text-xs">${t.rank}</td>
                     <td class="px-6 py-5 flex items-center font-bold text-slate-800">
@@ -198,6 +213,7 @@
                     <td class="px-4 py-5 text-center font-medium">${t.all.played}</td>
                     <td class="px-2 py-5 text-center font-bold text-emerald-600">${t.all.win}</td>
                     <td class="px-2 py-5 text-center font-bold text-rose-500">${t.all.lose}</td>
+                    <td class="px-4 py-5 text-center font-bold">${t.goalsDiff}</td>
                     <td class="px-4 py-5 text-center font-black text-indigo-600">${t.points}</td>
                     <td class="px-8 py-5 text-right">${(t.form || "").split('').map(f => `<span class="form-dot form-${f}">${f}</span>`).join('')}</td>
                 </tr>`).join('');
@@ -210,77 +226,99 @@
             renderMiniList(assists?.slice(0, 5), 'topAssists', 'goals.assists');
         }
 
-        async function loadMatches() {
+        async function loadLiveStatus() {
             const live = await api(`fixtures?live=all&league=${state.leagueId}`);
+            document.getElementById('liveBadge').classList.toggle('hidden', live.length === 0);
+        }
+
+        async function loadMatches() {
             const upcoming = await api(`fixtures?league=${state.leagueId}&season=${state.season}&next=10`);
-            
-            document.getElementById('liveIndicator').classList.toggle('hidden', live.length === 0);
-            
+            const live = await api(`fixtures?live=all&league=${state.leagueId}`);
+
             document.getElementById('liveList').innerHTML = live.length === 0 ? 
-                '<div class="p-8 text-center text-slate-300 text-xs font-bold border-2 border-dashed border-slate-100 rounded-3xl">NO MATCHES CURRENTLY IN PLAY</div>' :
+                '<div class="p-6 text-center text-slate-300 text-[10px] font-bold border-2 border-dashed border-slate-100 rounded-2xl uppercase">All Quiet - No Live Games</div>' :
                 live.map(m => `
-                <div class="bg-white p-6 rounded-3xl border-2 border-emerald-500/20 card-shadow flex justify-between items-center">
-                    <div class="flex-1 text-right font-bold text-sm">${m.teams.home.name}</div>
-                    <div class="px-6 text-center">
-                        <div class="text-emerald-500 font-black text-2xl">${m.goals.home} - ${m.goals.away}</div>
-                        <div class="text-[10px] font-black text-emerald-400 uppercase">${m.fixture.status.elapsed}' Live</div>
-                    </div>
-                    <div class="flex-1 text-left font-bold text-sm">${m.teams.away.name}</div>
-                </div>`).join('');
+                    <div class="bg-white p-6 rounded-2xl border-2 border-emerald-500/20 card-shadow text-center">
+                        <div class="flex justify-between items-center px-4">
+                            <span class="flex-1 font-bold text-sm">${m.teams.home.name}</span>
+                            <span class="px-4 text-2xl font-black text-emerald-600">${m.goals.home} - ${m.goals.away}</span>
+                            <span class="flex-1 font-bold text-sm">${m.teams.away.name}</span>
+                        </div>
+                        <div class="mt-2 text-[9px] font-black text-emerald-400 uppercase tracking-widest">${m.fixture.status.elapsed}' In Play</div>
+                    </div>`).join('');
 
             document.getElementById('upcomingList').innerHTML = upcoming.map(m => `
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center group hover:border-indigo-200 transition-all">
-                    <div class="flex-1 text-xs font-bold text-slate-600">${m.teams.home.name} vs ${m.teams.away.name}</div>
-                    <div class="text-[10px] font-black text-slate-400 mr-4">${new Date(m.fixture.date).toLocaleDateString()}</div>
-                    <button onclick="getPrediction(${m.fixture.id})" class="bg-slate-50 group-hover:bg-indigo-600 group-hover:text-white px-3 py-1 rounded-lg text-[10px] font-black transition-colors uppercase">Analyze</button>
+                <div class="bg-white p-4 rounded-xl border border-slate-100 flex justify-between items-center group">
+                    <div class="flex items-center space-x-3 truncate">
+                        <img src="${m.teams.home.logo}" class="w-4 h-4">
+                        <span class="text-xs font-bold text-slate-700 truncate">${m.teams.home.name} vs ${m.teams.away.name}</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-[9px] font-bold text-slate-400 uppercase">${new Date(m.fixture.date).toLocaleDateString()}</span>
+                        <button onclick="getPrediction(${m.fixture.id}, ${m.teams.home.id}, ${m.teams.away.id})" class="bg-indigo-50 text-indigo-600 px-4 py-1 rounded-lg text-[10px] font-black group-hover:bg-indigo-600 group-hover:text-white transition-all uppercase">Analyze</button>
+                    </div>
                 </div>`).join('');
         }
 
-        async function getPrediction(fixId) {
+        async function getPrediction(fixId, homeId, awayId) {
             switchTab('predictions');
-            document.getElementById('predictionDisplay').innerHTML = '<div class="col-span-12 py-20 loading-shimmer rounded-3xl"></div>';
-            document.getElementById('predictionDisplay').classList.remove('hidden');
+            document.getElementById('predictionPrompt').classList.add('hidden');
+            const display = document.getElementById('predictionDisplay');
+            display.innerHTML = '<div class="h-64 loading-shimmer rounded-3xl"></div>';
+            display.classList.remove('hidden');
 
-            const data = await api(`predictions?fixture=${fixId}`);
-            if (!data || data.length === 0) return;
-            const p = data[0];
+            const [predData, h2hData] = await Promise.all([
+                api(`predictions?fixture=${fixId}`),
+                api(`fixtures/headtohead?h2h=${homeId}-${awayId}&last=5`)
+            ]);
 
-            document.getElementById('predictionDisplay').innerHTML = `
-                <div class="lg:col-span-12 bg-white p-8 rounded-3xl border border-slate-200 card-shadow">
-                    <div class="flex justify-between items-center mb-8">
-                        <div class="text-center flex-1">
-                            <img src="${p.teams.home.logo}" class="w-16 h-16 mx-auto mb-2">
-                            <p class="font-black">${p.teams.home.name}</p>
-                        </div>
-                        <div class="px-10 text-center">
-                            <span class="bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full text-[10px] font-black">WIN PROBABILITY</span>
-                            <div class="flex h-3 w-64 bg-slate-100 rounded-full overflow-hidden mt-4">
-                                <div class="bg-emerald-500 h-full" style="width: ${p.predictions.percent.home}"></div>
-                                <div class="bg-slate-300 h-full" style="width: ${p.predictions.percent.draw}"></div>
-                                <div class="bg-indigo-500 h-full" style="width: ${p.predictions.percent.away}"></div>
-                            </div>
-                            <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2">
-                                <span>${p.predictions.percent.home} Home</span>
-                                <span>Draw</span>
-                                <span>${p.predictions.percent.away} Away</span>
-                            </div>
-                        </div>
-                        <div class="text-center flex-1">
-                            <img src="${p.teams.away.logo}" class="w-16 h-16 mx-auto mb-2">
-                            <p class="font-black">${p.teams.away.name}</p>
-                        </div>
+            const p = predData[0];
+            
+            let h2hHtml = h2hData.map(h => `
+                <div class="flex justify-between items-center p-3 border-b border-slate-100 last:border-0">
+                    <span class="flex-1 text-[10px] font-bold text-slate-500">${new Date(h.fixture.date).getFullYear()}</span>
+                    <div class="flex-[3] flex justify-center items-center space-x-4">
+                        <span class="text-xs font-bold ${h.teams.home.id === homeId ? 'text-indigo-600' : 'text-slate-400'}">${h.teams.home.name}</span>
+                        <span class="text-xs font-black bg-slate-100 px-3 py-1 rounded-lg">${h.goals.home} - ${h.goals.away}</span>
+                        <span class="text-xs font-bold ${h.teams.away.id === awayId ? 'text-indigo-600' : 'text-slate-400'}">${h.teams.away.name}</span>
                     </div>
-                    <div class="bg-slate-50 p-6 rounded-2xl">
-                        <p class="text-xs font-black text-slate-400 uppercase mb-2">Expert Advice</p>
-                        <p class="text-slate-800 font-medium">${p.predictions.advice}</p>
+                </div>`).join('');
+
+            display.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Prediction Probability -->
+                    <div class="bg-white p-8 rounded-3xl card-shadow border border-slate-200">
+                        <div class="flex justify-between items-center mb-10">
+                            <div class="text-center"><img src="${p.teams.home.logo}" class="w-12 h-12 mb-2 mx-auto"><p class="text-xs font-black">${p.teams.home.name}</p></div>
+                            <div class="text-center px-4">
+                                <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest mb-4">Win Probability</p>
+                                <div class="flex h-3 w-48 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-full" style="width: ${p.predictions.percent.home}"></div>
+                                    <div class="bg-slate-300 h-full" style="width: ${p.predictions.percent.draw}"></div>
+                                    <div class="bg-indigo-600 h-full" style="width: ${p.predictions.percent.away}"></div>
+                                </div>
+                                <div class="flex justify-between text-[9px] font-bold text-slate-400 mt-2">
+                                    <span>Home ${p.predictions.percent.home}</span>
+                                    <span>Away ${p.predictions.percent.away}</span>
+                                </div>
+                            </div>
+                            <div class="text-center"><img src="${p.teams.away.logo}" class="w-12 h-12 mb-2 mx-auto"><p class="text-xs font-black">${p.teams.away.name}</p></div>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-2xl"><p class="text-[10px] font-black text-slate-400 uppercase mb-2 italic">AI Advice</p><p class="text-sm font-semibold leading-relaxed">${p.predictions.advice}</p></div>
+                    </div>
+
+                    <!-- H2H History -->
+                    <div class="bg-white rounded-3xl border border-slate-200 card-shadow overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 bg-slate-50/50"><h4 class="text-xs font-black text-slate-500 uppercase tracking-widest">Head-to-Head History</h4></div>
+                        <div class="p-4">${h2hHtml || '<p class="text-center py-10 text-xs text-slate-300">No past meetings found</p>'}</div>
                     </div>
                 </div>`;
         }
 
         function renderMiniList(data, id, path) {
             document.getElementById(id).innerHTML = data?.map(i => `
-                <div class="flex justify-between items-center text-[11px] p-2 bg-slate-50 rounded-xl">
-                    <span class="font-bold truncate w-24">${i.player.name}</span>
+                <div class="flex justify-between items-center text-[11px] p-2 bg-slate-50 rounded-xl mb-1">
+                    <span class="font-bold truncate text-slate-700">${i.player.name}</span>
                     <span class="font-black text-indigo-600">${path.split('.').reduce((o, k) => o[k], i.statistics[0])}</span>
                 </div>`).join('');
         }
