@@ -2,127 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Football Central - StatMaster</title>
+    <title>Football Summary - StatMaster</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hidden-rows { display: none; }
+        .expanded .hidden-rows { display: table-row; }
+    </style>
 </head>
 <body class="bg-[#0f172a] text-gray-100 flex min-h-screen">
 
-    <aside class="w-64 bg-[#1e293b] border-r border-gray-800 p-6 hidden md:block">
+    <aside class="w-64 bg-[#1e293b] border-r border-gray-800 p-6 hidden md:block fixed h-full">
         <h1 class="text-xl font-bold text-cyan-400 mb-8">STAT<span class="text-white">FOOTBALL</span></h1>
-        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">Leagues</h3>
         <nav class="space-y-2">
-            <button class="w-full text-left p-3 rounded-xl bg-cyan-600/20 text-cyan-400 border border-cyan-500/30">Premier League</button>
+            <button class="w-full text-left p-3 rounded-xl bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 font-bold">Premier League</button>
             <button class="w-full text-left p-3 rounded-xl text-gray-400 hover:bg-gray-800">La Liga</button>
-            <button class="w-full text-left p-3 rounded-xl text-gray-400 hover:bg-gray-800">Champions League</button>
         </nav>
     </aside>
 
-    <main class="flex-1 p-6 md:p-10 overflow-y-auto">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-            <div>
-                <h2 class="text-3xl font-bold">Premier League Summary</h2>
-                <p class="text-gray-400">Matchweek 36 • 2025/26 Season</p>
-            </div>
-            <div class="flex bg-[#1e293b] rounded-lg p-1 border border-gray-700">
-                <button class="px-4 py-1.5 rounded-md bg-gray-700 text-sm font-bold">Table</button>
-                <button class="px-4 py-1.5 rounded-md text-sm text-gray-400 hover:text-white">Top Players</button>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <main class="flex-1 md:ml-64 p-6 md:p-10">
+        
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
             
-            <div class="xl:col-span-2 space-y-6">
-                <div class="bg-[#1e293b] rounded-2xl border border-gray-800 overflow-hidden shadow-xl">
-                    <div class="p-5 border-b border-gray-800 flex justify-between items-center">
-                        <h3 class="font-bold">League Table</h3>
-                        <span class="text-xs text-cyan-400 font-semibold cursor-pointer">View Full Table →</span>
-                    </div>
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-900/50 text-gray-500 text-[10px] uppercase tracking-wider">
+            <div class="xl:col-span-2 space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold">EPL Season Summary</h2>
+                    <p class="text-gray-400">Current Leader: <span class="text-white font-bold">Manchester City</span></p>
+                </div>
+
+                <div class="bg-[#1e293b] rounded-2xl border border-gray-800 overflow-hidden shadow-2xl" id="leagueTableContainer">
+                    <table class="w-full text-left text-sm" id="leagueTable">
+                        <thead class="bg-gray-900/50 text-gray-500 text-[10px] uppercase">
                             <tr>
-                                <th class="px-5 py-3">Pos</th>
-                                <th class="px-5 py-3">Club</th>
-                                <th class="px-5 py-3 text-center">PL</th>
-                                <th class="px-5 py-3 text-center">GD</th>
-                                <th class="px-5 py-3 text-right pr-8">Pts</th>
+                                <th class="px-5 py-4">Pos</th>
+                                <th class="px-5 py-4">Club</th>
+                                <th class="px-5 py-4">Pts</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-800">
-                            <tr class="hover:bg-gray-800/40 transition">
-                                <td class="px-5 py-4 font-bold text-cyan-400 italic">1</td>
-                                <td class="px-5 py-4 flex items-center"><img src="https://media.api-sports.io/football/teams/50.png" class="w-6 mr-3"> Man City</td>
-                                <td class="px-5 py-4 text-center">36</td>
-                                <td class="px-5 py-4 text-center text-emerald-400">+43</td>
-                                <td class="px-5 py-4 text-right font-bold pr-8">77</td>
-                            </tr>
-                            <tr class="bg-cyan-900/10 hover:bg-cyan-900/20 transition">
-                                <td class="px-5 py-4 font-bold text-cyan-400 italic">2</td>
-                                <td class="px-5 py-4 flex items-center"><img src="https://media.api-sports.io/football/teams/42.png" class="w-6 mr-3"> Arsenal</td>
-                                <td class="px-5 py-4 text-center">36</td>
-                                <td class="px-5 py-4 text-center text-emerald-400">+42</td>
-                                <td class="px-5 py-4 text-right font-bold pr-8">79</td>
-                            </tr>
+                            <tr class="bg-cyan-900/10"><td class="px-5 py-3 font-bold">1</td><td class="px-5 py-3">Man City</td><td class="px-5 py-3">88</td></tr>
+                            <tr class="bg-cyan-900/5"><td class="px-5 py-3 font-bold">2</td><td class="px-5 py-3">Arsenal</td><td class="px-5 py-3">86</td></tr>
+                            <tr><td class="px-5 py-3 font-bold">10</td><td class="px-5 py-3">Brighton</td><td class="px-5 py-3">48</td></tr>
+                            
+                            <tr class="hidden-rows bg-gray-900/20"><td class="px-5 py-3">11</td><td class="px-5 py-3">Wolves</td><td class="px-5 py-3">46</td></tr>
+                            <tr class="hidden-rows bg-gray-900/20"><td class="px-5 py-3">20</td><td class="px-5 py-3">Sheffield Utd</td><td class="px-5 py-3">16</td></tr>
                         </tbody>
                     </table>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-[#1e293b] p-5 rounded-2xl border border-gray-800">
-                        <h3 class="text-xs font-bold text-gray-500 uppercase mb-4">Golden Boot race</h3>
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center text-sm">
-                                <span>1. Erling Haaland</span>
-                                <span class="font-bold text-cyan-400">32 Goals</span>
-                            </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span>2. Mohamed Salah</span>
-                                <span class="font-bold">24 Goals</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-[#1e293b] p-5 rounded-2xl border border-gray-800">
-                        <h3 class="text-xs font-bold text-gray-500 uppercase mb-4">Bad Boys (Red Cards)</h3>
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center text-sm">
-                                <span>1. Casemiro</span>
-                                <span class="font-bold text-red-500">2 Reds</span>
-                            </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span>2. Bruno Fernandes</span>
-                                <span class="font-bold">1 Red</span>
-                            </div>
-                        </div>
-                    </div>
+                    <button onclick="toggleTable()" id="readMoreBtn" class="w-full py-4 bg-gray-800/50 text-cyan-400 text-xs font-bold uppercase hover:bg-gray-800 transition">
+                        Read More <i class="fa-solid fa-chevron-down ml-1"></i>
+                    </button>
                 </div>
             </div>
 
             <div class="space-y-6">
-                <div class="bg-gradient-to-br from-red-900/40 to-[#1e293b] rounded-2xl border border-red-500/20 p-6 shadow-2xl">
+                <div class="bg-[#1e293b] p-6 rounded-2xl border border-gray-800 shadow-xl">
                     <div class="flex items-center space-x-4 mb-6">
-                        <div class="w-16 h-16 bg-[#0f172a] rounded-full border-2 border-red-500 overflow-hidden">
-                            <img src="https://media.api-sports.io/football/players/1465.png" alt="Martinelli">
-                        </div>
+                        <img src="https://media.api-sports.io/football/teams/42.png" class="w-12 h-12">
                         <div>
-                            <h3 class="text-lg font-bold">Gabriel Martinelli</h3>
-                            <p class="text-xs text-gray-400 uppercase tracking-widest">Left Winger • #11</p>
+                            <h3 class="font-bold text-xl">Arsenal FC</h3>
+                            <p class="text-xs text-gray-500 uppercase tracking-widest">History & Honors</p>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-[#0f172a]/60 p-3 rounded-xl border border-gray-800">
-                            <p class="text-[10px] text-gray-500 uppercase">Goals</p>
-                            <p class="text-xl font-bold">11</p>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-[#0f172a] rounded-xl border-l-4 border-amber-500">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold">Last League Title</p>
+                            <p class="text-lg font-bold text-amber-500">2003/2004 <span class="text-gray-400 font-normal text-sm">(The Invincibles)</span></p>
                         </div>
-                        <div class="bg-[#0f172a]/60 p-3 rounded-xl border border-gray-800">
-                            <p class="text-[10px] text-gray-500 uppercase">xG</p>
-                            <p class="text-xl font-bold text-emerald-400">0.72</p>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="p-3 bg-[#0f172a] rounded-xl border border-gray-800">
+                                <p class="text-[10px] text-gray-500 uppercase">League Titles</p>
+                                <p class="text-xl font-bold">13</p>
+                            </div>
+                            <div class="p-3 bg-[#0f172a] rounded-xl border border-gray-800">
+                                <p class="text-[10px] text-gray-500 uppercase">FA Cups</p>
+                                <p class="text-xl font-bold">14</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-800">
+                            <p class="text-xs text-gray-400 italic">"Arsenal haven't won the Premier League in **22 years**, making the current title race their most significant in decades."</p>
                         </div>
                     </div>
-                    <button class="w-full mt-6 py-2.5 bg-red-600 text-white rounded-xl text-sm font-bold hover:bg-red-500 transition">View Full Heatmap</button>
                 </div>
             </div>
 
         </div>
     </main>
+
+    <script>
+        function toggleTable() {
+            const container = document.getElementById('leagueTableContainer');
+            const btn = document.getElementById('readMoreBtn');
+            
+            container.classList.toggle('expanded');
+            
+            if (container.classList.contains('expanded')) {
+                btn.innerHTML = 'Show Less <i class="fa-solid fa-chevron-up ml-1"></i>';
+            } else {
+                btn.innerHTML = 'Read More <i class="fa-solid fa-chevron-down ml-1"></i>';
+            }
+        }
+    </script>
 </body>
 </html>
