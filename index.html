@@ -3,34 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StatFootball | Premium Live Hub</title>
+    <title>StatFootball | Pro Analytics Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
-        
-        /* Mobile Sidebar Logic */
         #sidebar { transition: transform 0.3s ease-in-out; }
         .sidebar-open { transform: translateX(0) !important; }
-        
         .active-league { background: #eef2ff; color: #4f46e5; border-right: 4px solid #4f46e5; font-weight: 700; }
         .active-tab { border-bottom: 3px solid #4f46e5; color: #4f46e5; }
-        
         .form-dot { width: 18px; height: 18px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; margin: 0 1px; color: white; flex-shrink: 0; }
         .form-W { background-color: #10b981; } .form-D { background-color: #94a3b8; } .form-L { background-color: #f43f5e; }
-        
         .card-shadow { box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.05); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        .round-pill { flex-shrink: 0; padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 800; border: 1px solid #e2e8f0; transition: all 0.2s; cursor: pointer; background: white; white-space: nowrap; }
+        .round-pill { flex-shrink: 0; padding: 6px 14px; border-radius: 99px; font-size: 11px; font-weight: 800; border: 1px solid #e2e8f0; cursor: pointer; background: white; white-space: nowrap; }
         .round-pill.active { background: #4f46e5; color: white; border-color: #4f46e5; }
-
         @keyframes live-pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         .animate-live { animation: live-pulse 2s infinite; }
-
-        /* Modal Blur */
-        .modal-backdrop { backdrop-filter: blur(8px); background-color: rgba(15, 23, 42, 0.5); }
     </style>
 </head>
 <body class="flex min-h-screen overflow-x-hidden">
@@ -44,49 +34,42 @@
     <!-- Sidebar Overlay -->
     <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/40 z-40 hidden lg:hidden"></div>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-slate-200 flex flex-col z-50 -translate-x-full lg:translate-x-0 overflow-hidden transition-transform duration-300">
+    <!-- Sidebar (Top 15 Leagues) -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-slate-200 flex flex-col z-50 -translate-x-full lg:translate-x-0 transition-transform duration-300">
         <div class="p-8 border-b border-slate-100 text-center hidden lg:block">
-            <h1 class="text-2xl font-black text-indigo-600 italic leading-none">STAT<span class="text-slate-900">FOOTBALL</span></h1>
-            <p class="text-[9px] text-slate-400 font-bold mt-2 uppercase tracking-widest">Global Analytics</p>
+            <h1 class="text-2xl font-black text-indigo-600 italic">STAT<span class="text-slate-900">FOOTBALL</span></h1>
+            <p class="text-[9px] text-slate-400 font-bold mt-2 uppercase">Pro Analytics</p>
         </div>
         <nav id="leagueNav" class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-1 pt-20 lg:pt-4"></nav>
-        <div class="p-6 border-t border-slate-100 bg-slate-50/50">
-            <div class="flex items-center space-x-2 text-[10px] font-bold text-emerald-600 uppercase">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Live Feed Active</span>
-            </div>
-        </div>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-screen overflow-y-auto no-scrollbar pt-16 lg:pt-0">
-        <!-- Header -->
         <header class="px-6 lg:px-8 py-6 sticky top-0 bg-white/90 backdrop-blur-md z-30 border-b border-slate-100">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6">
+            <div class="flex justify-between items-end mb-6">
                 <div>
                     <div class="flex items-center space-x-3 text-indigo-500 text-[10px] font-black uppercase tracking-widest mb-1">
                         <span id="headerLeague">...</span> <span class="text-slate-300">|</span> 
                         <select id="seasonSelector" onchange="changeSeason(this.value)" class="bg-indigo-50 text-indigo-600 border-none outline-none font-black cursor-pointer rounded px-1">
-                            <option value="2025">2025/26</option>
-                            <option value="2024">2024/25</option>
-                            <option value="2023">2023/24</option>
+                            <option value="2025">2025/26</option><option value="2024">2024/25</option><option value="2023">2023/24</option>
                         </select>
                     </div>
-                    <h2 id="viewTitle" class="text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-none">Syncing...</h2>
+                    <h2 id="viewTitle" class="text-2xl lg:text-3xl font-extrabold text-slate-900 leading-none">Dashboard</h2>
                 </div>
             </div>
             <nav class="flex space-x-6 overflow-x-auto no-scrollbar">
                 <button onclick="switchTab('summary')" id="tab-summary" class="pb-3 text-xs font-bold text-slate-400 active-tab whitespace-nowrap">Summary</button>
                 <button onclick="switchTab('matches')" id="tab-matches" class="pb-3 text-xs font-bold text-slate-400 whitespace-nowrap">Fixtures & Live</button>
+                <button onclick="switchTab('players')" id="tab-players" class="pb-3 text-xs font-bold text-slate-400 whitespace-nowrap">Players</button>
                 <button onclick="switchTab('predictions')" id="tab-predictions" class="pb-3 text-xs font-bold text-slate-400 whitespace-nowrap">Predictions</button>
             </nav>
         </header>
 
-        <div class="px-4 lg:px-8 py-6 space-y-6 lg:space-y-8">
-            <!-- SUMMARY VIEW -->
+        <div class="px-4 lg:px-8 py-6 space-y-8">
+            
+            <!-- 1. SUMMARY VIEW -->
             <div id="view-summary" class="space-y-6">
-                <section class="bg-white rounded-2xl lg:rounded-3xl border border-slate-200 overflow-hidden card-shadow">
+                <section class="bg-white rounded-2xl border border-slate-200 overflow-hidden card-shadow">
                     <div class="overflow-x-auto no-scrollbar">
                         <table class="w-full text-left min-w-[600px]">
                             <thead class="text-[10px] text-slate-400 font-bold uppercase bg-slate-50/50">
@@ -95,45 +78,58 @@
                             <tbody id="standingsBody" class="divide-y divide-slate-100 text-sm"></tbody>
                         </table>
                     </div>
-                    <button onclick="toggleStandings()" class="w-full py-4 text-[10px] font-black text-indigo-600 hover:bg-indigo-50 transition uppercase border-t border-slate-100">Load Full Standings</button>
+                    <button onclick="toggleStandings()" class="w-full py-4 text-[10px] font-black text-indigo-600 uppercase border-t border-slate-100">Load Full Standings</button>
                 </section>
-
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <!-- Statistics cards -->
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Goals <i class="fa-solid fa-fire text-orange-400"></i></h4><div id="topScorers" class="space-y-1"></div></div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Assists <i class="fa-solid fa-magic text-indigo-400"></i></h4><div id="topAssists" class="space-y-1"></div></div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Yellows <i class="fa-solid fa-copy text-amber-400"></i></h4><div id="topYellows" class="space-y-1"></div></div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Reds <i class="fa-solid fa-square text-rose-500"></i></h4><div id="topReds" class="space-y-1"></div></div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">GA <i class="fa-solid fa-shield text-emerald-500"></i></h4><div id="topSheets" class="space-y-1"></div></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3">Goals</h4><div id="topScorers" class="space-y-1"></div></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3">Assists</h4><div id="topAssists" class="space-y-1"></div></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3">Yellows</h4><div id="topYellows" class="space-y-1"></div></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3">Reds</h4><div id="topReds" class="space-y-1"></div></div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3">GA (Defense)</h4><div id="topSheets" class="space-y-1"></div></div>
                 </div>
             </div>
 
-            <!-- MATCHES VIEW -->
+            <!-- 2. MATCHES VIEW -->
             <div id="view-matches" class="hidden space-y-4">
-                <div class="flex items-center space-x-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth" id="roundRibbon"></div>
+                <div class="flex items-center space-x-3 overflow-x-auto pb-4 no-scrollbar" id="roundRibbon"></div>
                 <div id="matchDayDisplay" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
             </div>
 
-            <!-- PREDICTIONS VIEW -->
+            <!-- 3. PLAYERS VIEW (NEW) -->
+            <div id="view-players" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left: Top Performance Cards -->
+                    <div class="lg:col-span-4 space-y-6">
+                        <div class="bg-indigo-600 p-6 rounded-2xl text-white shadow-lg">
+                            <h4 class="text-[10px] font-black uppercase opacity-70 mb-4 tracking-widest">Season MVP</h4>
+                            <div id="mvpPlayer"></div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 card-shadow">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4">Goalkeepers (Saves)</h4>
+                            <div id="playerGkList" class="space-y-3"></div>
+                        </div>
+                    </div>
+                    <!-- Right: Searchable Table -->
+                    <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 card-shadow overflow-hidden">
+                        <div class="p-5 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
+                            <h3 class="text-xs font-black text-slate-800 uppercase">Top 20 Rated Players</h3>
+                        </div>
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="w-full text-left min-w-[500px]">
+                                <thead class="text-[10px] text-slate-400 font-black uppercase bg-slate-50">
+                                    <tr><th class="px-6 py-4">Player</th><th class="px-4 py-4">Club</th><th class="px-4 py-4 text-center">Rating</th><th class="px-4 py-4 text-center">Apps</th><th class="px-4 py-4 text-right pr-6">Value</th></tr>
+                                </thead>
+                                <tbody id="playerFullTable" class="divide-y divide-slate-50 text-sm"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. PREDICTIONS VIEW -->
             <div id="view-predictions" class="hidden"><div id="predictionDisplay"></div></div>
         </div>
     </main>
-
-    <!-- Modal: Trophy Pop-up -->
-    <div id="trophyModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-        <div class="modal-backdrop absolute inset-0" onclick="closeModal()"></div>
-        <div class="bg-white w-full max-w-md rounded-2xl overflow-hidden shadow-2xl relative animate-in zoom-in duration-200">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="p-8 text-center border-b border-slate-50">
-                <img id="modalLogo" src="" class="w-16 h-16 mx-auto mb-3">
-                <h3 id="modalTeamName" class="text-xl font-black text-slate-900">Team Name</h3>
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 italic">Honours & Trophy Cabinet</p>
-            </div>
-            <div id="trophyGrid" class="p-6 max-h-[400px] overflow-y-auto no-scrollbar grid grid-cols-1 gap-3">
-                <!-- Trophies go here -->
-            </div>
-        </div>
-    </div>
 
     <script>
         const CONFIG = { KEY: "65a3207dce4446073729a1e509ba3278", BASE: "https://v3.football.api-sports.io" };
@@ -148,7 +144,7 @@
             { id: 144, name: "Championship", country: "ENG" }
         ];
 
-        let state = { leagueId: 39, season: 2025, tab: 'summary', standings: [], expanded: false, round: null };
+        let state = { leagueId: 39, season: 2025, tab: 'summary', standings: [], expanded: false };
 
         async function api(path) {
             try {
@@ -157,7 +153,6 @@
             } catch (e) { return []; }
         }
 
-        // Sidebar Toggle
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('sidebar-open');
             document.getElementById('sidebarOverlay').classList.toggle('hidden');
@@ -170,6 +165,7 @@
             document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
             document.getElementById(`view-${t}`).classList.remove('hidden');
             if (t === 'matches') loadRounds();
+            if (t === 'players') loadPlayersData();
         }
 
         function changeSeason(year) { state.season = parseInt(year); loadDashboard(state.leagueId); }
@@ -179,14 +175,12 @@
             if (window.innerWidth < 1024) document.getElementById('sidebar').classList.remove('sidebar-open');
             document.getElementById('sidebarOverlay').classList.add('hidden');
             
-            document.getElementById('standingsBody').innerHTML = '<tr><td colspan="7" class="py-20 text-center animate-pulse text-slate-300 font-bold uppercase text-[10px]">Updating Data...</td></tr>';
-            
             const res = await api(`standings?league=${id}&season=${state.season}`);
             if (res && res[0]) {
                 state.standings = res[0].league.standings[0];
                 const league = LEAGUES.find(l => l.id === id);
                 document.getElementById('headerLeague').innerText = league.name;
-                document.getElementById('viewTitle').innerText = `${league.name} Standings`;
+                document.getElementById('viewTitle').innerText = `${league.name}`;
                 renderStandings();
                 loadStats();
             }
@@ -195,7 +189,7 @@
         function renderStandings() {
             const data = state.expanded ? state.standings : state.standings.slice(0, 10);
             document.getElementById('standingsBody').innerHTML = data.map(t => `
-                <tr onclick="showTrophies(${t.team.id}, '${t.team.name}', '${t.team.logo}')" class="hover:bg-indigo-50/50 transition cursor-pointer">
+                <tr class="hover:bg-slate-50 transition">
                     <td class="px-6 py-4 font-black text-slate-300 text-[10px]">${t.rank}</td>
                     <td class="px-4 py-4 flex items-center font-bold text-slate-700 text-xs">
                         <img src="${t.team.logo}" class="w-5 h-5 mr-3"> 
@@ -211,119 +205,78 @@
 
         function toggleStandings() { state.expanded = !state.expanded; renderStandings(); }
 
-        // Trophies Logic
-        async function showTrophies(teamId, teamName, logo) {
-            const modal = document.getElementById('trophyModal');
-            document.getElementById('modalLogo').src = logo;
-            document.getElementById('modalTeamName').innerText = teamName;
-            document.getElementById('trophyGrid').innerHTML = '<div class="py-10 text-center animate-pulse text-[10px] font-bold text-slate-300 uppercase">Consulting Archives...</div>';
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+        // Players View Data
+        async function loadPlayersData() {
+            const league = state.leagueId;
+            const season = state.season;
+            
+            document.getElementById('playerFullTable').innerHTML = '<tr><td colspan="5" class="py-10 text-center animate-pulse">Scanning Active Squads...</td></tr>';
+            
+            // Using scorers endpoint as a proxy for 'top players' in free tier
+            const [top, assists] = await Promise.all([
+                api(`players/topscorers?league=${league}&season=${season}`),
+                api(`players/topassists?league=${league}&season=${season}`)
+            ]);
 
-            const res = await api(`trophies?team=${teamId}`);
-            if (!res || res.length === 0) {
-                document.getElementById('trophyGrid').innerHTML = '<div class="py-10 text-center text-slate-400 text-xs">No records found in this tier.</div>';
-                return;
+            // MVP logic
+            if(top && top[0]) {
+                const mvp = top[0];
+                document.getElementById('mvpPlayer').innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <img src="${mvp.player.photo}" class="w-16 h-16 rounded-2xl border-2 border-white/20">
+                        <div>
+                            <p class="text-lg font-black">${mvp.player.name}</p>
+                            <p class="text-xs opacity-70">${mvp.statistics[0].team.name}</p>
+                            <div class="mt-2 flex space-x-3">
+                                <span class="text-xs font-bold">Goals: ${mvp.statistics[0].goals.total}</span>
+                                <span class="text-xs font-bold">Rating: ${mvp.statistics[0].games.rating || 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>`;
             }
 
-            // Group by league name to get counts and most recent year
-            const honours = res.reduce((acc, curr) => {
-                if (!acc[curr.league]) acc[curr.league] = { count: 0, last: 0 };
-                acc[curr.league].count++;
-                const year = parseInt(curr.season.split('-')[0]);
-                if (year > acc[curr.league].last) acc[curr.league].last = year;
-                return acc;
-            }, {});
-
-            document.getElementById('trophyGrid').innerHTML = Object.entries(honours).map(([name, data]) => `
-                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center">
-                    <div>
-                        <p class="text-xs font-black text-slate-800">${name}</p>
-                        <p class="text-[9px] text-slate-400 uppercase font-bold mt-0.5">Last Won: ${data.last}</p>
-                    </div>
-                    <span class="text-indigo-600 font-black text-sm">x${data.count}</span>
-                </div>
-            `).join('');
+            // Full Directory Table
+            document.getElementById('playerFullTable').innerHTML = top.map(p => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="px-6 py-4 flex items-center space-x-3">
+                        <img src="${p.player.photo}" class="w-8 h-8 rounded-lg">
+                        <span class="font-bold text-slate-800 text-xs">${p.player.name}</span>
+                    </td>
+                    <td class="px-4 py-4 text-xs font-medium text-slate-500">${p.statistics[0].team.name}</td>
+                    <td class="px-4 py-4 text-center"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-md text-[10px] font-black">${p.statistics[0].games.rating || '---'}</span></td>
+                    <td class="px-4 py-4 text-center text-xs font-bold">${p.statistics[0].games.appearences}</td>
+                    <td class="px-4 py-4 text-right pr-6 text-xs font-black text-emerald-600">ACTIVE</td>
+                </tr>`).join('');
         }
 
-        function closeModal() {
-            const modal = document.getElementById('trophyModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        // Matches Logic
+        // Matches Logic (Same as before but theme-consistent)
         async function loadRounds() {
             const rounds = await api(`fixtures/rounds?league=${state.leagueId}&season=${state.season}`);
             const current = await api(`fixtures/rounds?league=${state.leagueId}&season=${state.season}&current=true`);
             const target = current[0] || rounds[rounds.length-1];
-            
-            document.getElementById('roundRibbon').innerHTML = rounds.map(r => `
-                <div onclick="loadRoundFixtures('${r}')" data-rid="${r}" class="round-pill ${r === target ? 'active' : ''}">${r.replace('Regular Season - ', 'Rd ')}</div>
-            `).join('');
+            document.getElementById('roundRibbon').innerHTML = rounds.map(r => `<div onclick="loadRoundFixtures('${r}')" class="round-pill ${r === target ? 'active' : ''}">${r.replace('Regular Season - ', 'Rd ')}</div>`).join('');
             loadRoundFixtures(target);
         }
 
         async function loadRoundFixtures(roundName) {
-            state.round = roundName;
-            document.querySelectorAll('.round-pill').forEach(p => p.classList.toggle('active', p.dataset.rid === roundName));
-            document.getElementById('matchDayDisplay').innerHTML = '<div class="col-span-full py-20 text-center text-slate-300 font-bold uppercase text-[10px]">Syncing Fixtures...</div>';
-            
+            document.querySelectorAll('.round-pill').forEach(p => p.classList.toggle('active', p.innerText.includes(roundName.split('-').pop().trim())));
+            document.getElementById('matchDayDisplay').innerHTML = '<div class="col-span-full py-20 text-center animate-pulse text-slate-300 uppercase text-[10px] font-bold">Syncing...</div>';
             const fixtures = await api(`fixtures?league=${state.leagueId}&season=${state.season}&round=${roundName}`);
             document.getElementById('matchDayDisplay').innerHTML = fixtures.map(m => {
                 const isFT = m.fixture.status.short === 'FT';
                 const isLive = ['1H','2H','HT','ET','P'].includes(m.fixture.status.short);
-                const scoreColor = isLive ? 'text-emerald-500 font-black' : isFT ? 'text-indigo-600' : 'text-slate-300';
-                
-                return `
-                <div class="bg-white p-6 rounded-2xl border border-slate-100 card-shadow">
-                    <div class="flex justify-between items-center mb-5">
-                        <span class="text-[8px] font-black text-slate-300 uppercase tracking-tighter">${m.fixture.status.long}</span>
-                        ${isLive ? '<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[8px] font-black animate-live">LIVE</span>' : ''}
+                return `<div class="bg-white p-5 rounded-2xl border border-slate-100 card-shadow text-center">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-[8px] font-bold text-slate-300 uppercase">${m.fixture.status.long}</span>
+                        ${isLive ? '<span class="text-emerald-500 text-[8px] font-black animate-live">LIVE</span>' : ''}
                     </div>
-                    <div class="flex justify-between items-center text-center">
+                    <div class="flex justify-between items-center px-2">
                         <div class="flex-1 overflow-hidden"><img src="${m.teams.home.logo}" class="w-8 h-8 mx-auto mb-1"><p class="text-[9px] font-bold truncate">${m.teams.home.name}</p></div>
-                        <div class="px-3">
-                            <div class="text-xl font-black ${scoreColor}">${isLive || isFT ? m.goals.home + ' - ' + m.goals.away : new Date(m.fixture.date).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>
-                            ${isLive ? `<div class="text-[8px] font-black text-emerald-400 uppercase mt-1">${m.fixture.status.elapsed}'</div>` : ''}
-                        </div>
+                        <div class="px-2"><div class="text-lg font-black ${isLive ? 'text-emerald-500' : isFT ? 'text-indigo-600' : 'text-slate-300'}">${isLive || isFT ? m.goals.home + '-' + m.goals.away : new Date(m.fixture.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>
                         <div class="flex-1 overflow-hidden"><img src="${m.teams.away.logo}" class="w-8 h-8 mx-auto mb-1"><p class="text-[9px] font-bold truncate">${m.teams.away.name}</p></div>
-                    </div>
-                    <div class="mt-5 pt-3 border-t border-slate-50 flex justify-between items-center">
-                        <span class="text-[8px] font-bold text-slate-300 uppercase">${new Date(m.fixture.date).toLocaleDateString()}</span>
-                        ${!isFT && !isLive ? `<button onclick="getPrediction(${m.fixture.id}, ${m.teams.home.id}, ${m.teams.away.id})" class="text-[9px] font-black text-indigo-500 uppercase">Analyze</button>` : ''}
                     </div>
                 </div>`;
             }).join('');
-        }
-
-        async function getPrediction(fixId, homeId, awayId) {
-            switchTab('predictions');
-            const display = document.getElementById('predictionDisplay');
-            display.innerHTML = '<div class="p-20 text-center font-black text-slate-200 uppercase text-xs">Consulting AI Preview...</div>';
-            const [pred, h2h] = await Promise.all([api(`predictions?fixture=${fixId}`), api(`fixtures/headtohead?h2h=${homeId}-${awayId}&last=5`)]);
-            const p = pred[0];
-            
-            display.innerHTML = `
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in fade-in">
-                    <div class="bg-white p-8 rounded-2xl card-shadow border border-slate-100">
-                        <div class="flex justify-between items-center mb-8 text-center">
-                            <div class="w-16"><img src="${p.teams.home.logo}" class="w-10 h-10 mx-auto mb-1"><p class="text-[10px] font-black">${p.teams.home.name}</p></div>
-                            <div class="flex-1 px-4">
-                                <div class="flex h-1.5 bg-slate-100 rounded-full overflow-hidden mb-2">
-                                    <div class="bg-emerald-500" style="width:${p.predictions.percent.home}"></div><div class="bg-slate-300" style="width:${p.predictions.percent.draw}"></div><div class="bg-indigo-600" style="width:${p.predictions.percent.away}"></div>
-                                </div>
-                                <p class="text-[8px] font-bold text-slate-400 uppercase">Win Probability: H ${p.predictions.percent.home} / A ${p.predictions.percent.away}</p>
-                            </div>
-                            <div class="w-16"><img src="${p.teams.away.logo}" class="w-10 h-10 mx-auto mb-1"><p class="text-[10px] font-black">${p.teams.away.name}</p></div>
-                        </div>
-                        <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-100 text-xs font-semibold leading-relaxed italic text-indigo-900">"${p.predictions.advice}"</div>
-                    </div>
-                    <div class="bg-white rounded-2xl border border-slate-100 card-shadow overflow-hidden">
-                        <div class="p-4 border-b border-slate-100 bg-slate-50/50"><h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest">H2H Previous Scores</h4></div>
-                        <div class="p-2">${h2h.map(h => `<div class="flex justify-between items-center p-3 text-[10px] border-b border-slate-50 last:border-0"><span class="w-8 text-slate-300 font-bold">${new Date(h.fixture.date).getFullYear()}</span><span class="flex-1 font-bold text-center">${h.teams.home.name} <span class="bg-slate-100 px-2 rounded mx-1">${h.goals.home}-${h.goals.away}</span> ${h.teams.away.name}</span></div>`).join('')}</div>
-                    </div>
-                </div>`;
         }
 
         async function loadStats() {
@@ -340,7 +293,7 @@
         }
 
         function renderMini(id, d, p, c) {
-            document.getElementById(id).innerHTML = d?.map(i => `<div class="flex justify-between items-center text-[10px] p-2 bg-slate-50 rounded-xl mb-1"><span class="font-bold truncate w-24">${i.player.name}</span><span class="font-black ${c}">${p.split('.').reduce((o,k)=>o[k], i.statistics[0]) || 0}</span></div>`).join('') || '--';
+            document.getElementById(id).innerHTML = d?.map(i => `<div class="flex justify-between items-center text-[10px] p-2 bg-slate-50 rounded-xl mb-1"><span class="font-bold truncate w-24 text-slate-600">${i.player.name}</span><span class="font-black ${c}">${p.split('.').reduce((o,k)=>o[k], i.statistics[0]) || 0}</span></div>`).join('') || '--';
         }
 
         function renderSidebar() {
