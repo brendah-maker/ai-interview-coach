@@ -8,67 +8,112 @@
 </head>
 <body class="bg-[#0f172a] text-white flex min-h-screen">
 
-    <aside class="w-64 bg-[#1e293b] border-r border-gray-800 p-6 space-y-8">
-        <div>
-            <h3 class="text-xs font-semibold text-gray-500 uppercase mb-4">Categories</h3>
-            <nav class="space-y-2">
-                <button onclick="filterLeagues('football')" class="w-full flex items-center justify-between bg-cyan-600/20 text-cyan-400 p-3 rounded-xl border border-cyan-500/30">
-                    <span><i class="fa-solid fa-futbol mr-3"></i> Football</span>
-                    <i class="fa-solid fa-chevron-right text-xs"></i>
-                </button>
-                <button onclick="filterLeagues('cricket')" class="w-full flex items-center text-gray-400 p-3 hover:text-white transition">
-                    <i class="fa-solid fa-cricket-bat-ball mr-3"></i> Cricket
-                </button>
-                <button onclick="filterLeagues('basketball')" class="w-full flex items-center text-gray-400 p-3 hover:text-white transition">
-                    <i class="fa-solid fa-basketball mr-3"></i> Basketball
-                </button>
-            </nav>
+    <aside class="w-72 bg-[#1e293b] border-r border-gray-800 p-6 flex flex-col">
+        <div class="mb-10 px-2">
+            <h1 class="text-xl font-bold text-cyan-400">STAT<span class="text-white">MASTER</span></h1>
         </div>
-        <div>
-            <h3 class="text-xs font-semibold text-gray-500 uppercase mb-4">Player Search</h3>
-            <input type="text" placeholder="Type 'Gabriel Martinelli'..." class="w-full bg-[#0f172a] border border-gray-700 rounded-lg px-4 py-2 text-sm focus:border-cyan-500 outline-none">
+
+        <div class="space-y-8">
+            <div>
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">Categories</h3>
+                <nav class="space-y-2">
+                    <button onclick="updateLeagues('football')" id="btn-football" class="w-full flex items-center justify-between bg-cyan-600/20 text-cyan-400 p-3 rounded-xl border border-cyan-500/30 font-medium transition">
+                        <span><i class="fa-solid fa-futbol mr-3"></i> Football</span>
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </button>
+                    <button onclick="updateLeagues('cricket')" id="btn-cricket" class="w-full flex items-center text-gray-400 p-3 hover:text-white transition font-medium">
+                        <i class="fa-solid fa-cricket-bat-ball mr-3"></i> Cricket
+                    </button>
+                    <button onclick="updateLeagues('basketball')" id="btn-basketball" class="w-full flex items-center text-gray-400 p-3 hover:text-white transition font-medium">
+                        <i class="fa-solid fa-basketball mr-3"></i> Basketball
+                    </button>
+                </nav>
+            </div>
+
+            <div>
+                <h3 class="text-xs font-semibold text-gray-500 uppercase mb-4">Player Search</h3>
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-500"></i>
+                    <input type="text" placeholder="Type 'Gabriel Martinelli'..." class="w-full bg-[#0f172a] border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-sm focus:border-cyan-500 outline-none transition">
+                </div>
+            </div>
         </div>
     </aside>
 
     <main class="flex-1 p-8">
-        <nav class="flex space-x-8 border-b border-gray-800 mb-8 pb-4 text-sm font-medium text-gray-400">
+        <nav class="flex space-x-10 border-b border-gray-800 mb-8 pb-4 text-sm font-semibold text-gray-400">
             <a href="index.html" class="text-white border-b-2 border-cyan-400 pb-4">Home</a>
-            <a href="live-scores.html" class="hover:text-white">Live Scores</a>
-            <a href="fixtures.html" class="hover:text-white">Fixtures</a>
-            <a href="rankings.html" class="hover:text-white">Rankings</a>
+            <a href="live-scores.html" class="hover:text-white transition">Live Scores</a>
+            <a href="fixtures.html" class="hover:text-white transition">Fixtures</a>
+            <a href="rankings.html" class="hover:text-white transition">Rankings</a>
         </nav>
 
-        <h1 id="league-heading" class="text-2xl font-bold mb-6">Football Leagues</h1>
+        <header class="mb-8">
+            <h2 id="sport-title" class="text-2xl font-bold">Football Leagues</h2>
+            <p class="text-gray-500 text-sm mt-1">Select a league to view detailed stats and player rankings.</p>
+        </header>
         
-        <div id="league-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-[#1e293b] p-6 rounded-2xl border border-gray-800 hover:border-cyan-500 cursor-pointer">
-                <img src="https://media.api-sports.io/football/leagues/39.png" class="w-12 mb-4">
-                <h3 class="font-bold">Premier League</h3>
+        <div id="league-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             </div>
-            <div class="bg-[#1e293b] p-6 rounded-2xl border border-gray-800 hover:border-cyan-500 cursor-pointer">
-                <img src="https://media.api-sports.io/football/leagues/140.png" class="w-12 mb-4">
-                <h3 class="font-bold">La Liga</h3>
-            </div>
-        </div>
     </main>
 
     <script>
-        const data = {
-            football: ["Premier League", "La Liga", "Champions League"],
-            cricket: ["IPL", "T20 World Cup", "The Ashes"],
-            basketball: ["NBA", "EuroLeague", "NCAA"]
+        const sportsContent = {
+            football: {
+                label: "Football Leagues",
+                leagues: [
+                    { name: "Premier League", country: "England", img: "https://media.api-sports.io/football/leagues/39.png" },
+                    { name: "La Liga", country: "Spain", img: "https://media.api-sports.io/football/leagues/140.png" },
+                    { name: "Champions League", country: "Europe", img: "https://media.api-sports.io/football/leagues/2.png" }
+                ]
+            },
+            cricket: {
+                label: "Cricket Leagues",
+                leagues: [
+                    { name: "IPL", country: "India", img: "https://www.thesportsdb.com/images/media/league/badge/vhtpqw1521991472.png" },
+                    { name: "T20 World Cup", country: "International", img: "https://www.thesportsdb.com/images/media/league/badge/j37m541628164390.png" },
+                    { name: "Big Bash", country: "Australia", img: "https://www.thesportsdb.com/images/media/league/badge/z3ay371520610363.png" }
+                ]
+            },
+            basketball: {
+                label: "Basketball Leagues",
+                leagues: [
+                    { name: "NBA", country: "USA", img: "https://www.thesportsdb.com/images/media/league/badge/7786881521993437.png" },
+                    { name: "EuroLeague", country: "Europe", img: "https://www.thesportsdb.com/images/media/league/badge/f135501521993952.png" }
+                ]
+            }
         };
 
-        function filterLeagues(sport) {
-            const grid = document.getElementById('league-grid');
-            document.getElementById('league-heading').innerText = sport.charAt(0).toUpperCase() + sport.slice(1) + " Leagues";
-            grid.innerHTML = data[sport].map(league => `
-                <div class="bg-[#1e293b] p-6 rounded-2xl border border-gray-800 hover:border-cyan-500 cursor-pointer">
-                    <div class="w-12 h-12 bg-gray-700 rounded mb-4 flex items-center justify-center font-bold text-xs uppercase">${league.substring(0,3)}</div>
-                    <h3 class="font-bold">${league}</h3>
+        function updateLeagues(sportKey) {
+            const container = document.getElementById('league-container');
+            const title = document.getElementById('sport-title');
+            const data = sportsContent[sportKey];
+
+            // Update UI Title
+            title.innerText = data.label;
+
+            // Update Sidebar Button Styles
+            ['football', 'cricket', 'basketball'].forEach(key => {
+                const btn = document.getElementById(`btn-${key}`);
+                if(key === sportKey) {
+                    btn.className = "w-full flex items-center justify-between bg-cyan-600/20 text-cyan-400 p-3 rounded-xl border border-cyan-500/30 font-medium transition";
+                } else {
+                    btn.className = "w-full flex items-center text-gray-400 p-3 hover:text-white transition font-medium";
+                }
+            });
+
+            // Inject League Cards
+            container.innerHTML = data.leagues.map(league => `
+                <div class="group bg-[#1e293b] p-6 rounded-2xl border border-gray-800 hover:border-cyan-500 cursor-pointer transition-all hover:shadow-2xl hover:shadow-cyan-500/10">
+                    <img src="${league.img}" class="w-14 h-14 mb-4 object-contain" alt="${league.name}">
+                    <h3 class="font-bold text-lg">${league.name}</h3>
+                    <p class="text-xs text-gray-500 mt-1">${league.country}</p>
                 </div>
             `).join('');
         }
+
+        // Initialize with football
+        window.onload = () => updateLeagues('football');
     </script>
 </body>
 </html>
