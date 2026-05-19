@@ -1,115 +1,342 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Interview Coach</title>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Sports Dashboard</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for clean sport icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-[#121824] text-gray-100 font-sans min-h-screen">
 
-<body class="bg-gray-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-[#1a2232] border-b border-gray-800 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-bold tracking-wider text-cyan-400"><i class="fa-solid fa-chart-simple mr-2"></i>STAT<span class="text-white">MASTER</span></span>
+        </div>
+        <div class="hidden md:flex space-x-6 text-sm font-medium text-gray-400">
+            <a href="#" class="text-white border-b-2 border-cyan-400 pb-1">Home</a>
+            <a href="#" class="hover:text-white transition">Live Scores</a>
+            <a href="#" class="hover:text-white transition">Fixtures</a>
+            <a href="#" class="hover:text-white transition">Rankings</a>
+        </div>
+        <div class="text-xs text-gray-500 bg-[#121824] px-3 py-1.5 rounded-full border border-gray-800">
+            Status: <span class="text-emerald-400 font-semibold">● Live (Mock Mode)</span>
+        </div>
+    </nav>
 
-  <!-- Header -->
-  <header class="bg-white shadow">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-blue-600">AI Interview Coach</h1>
-      <nav class="space-x-6 text-gray-700 font-medium">
-        <a href="#" class="hover:text-blue-600">Home</a>
-        <a href="#" class="hover:text-blue-600">Features</a>
-        <a href="#" class="hover:text-blue-600">About</a>
-      </nav>
+    <!-- Main Layout Container -->
+    <div class="flex flex-col lg:flex-row min-h-[calc(screen-130px)]">
+        
+        <!-- Left Sidebar (Categories & Search) -->
+        <aside class="w-full lg:w-64 bg-[#1a2232] p-6 border-r border-gray-800 flex flex-col space-y-6">
+            <div>
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Categories</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <button onclick="switchSport('football')" id="btn-football" class="w-full flex items-center justify-between px-4 py-2.5 rounded-lg bg-cyan-900/40 text-cyan-400 font-medium border border-cyan-800/50 text-left transition">
+                            <span><i class="fa-solid fa-regular fa-futbol mr-2.5"></i> Football</span>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="switchSport('cricket')" id="btn-cricket" class="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-gray-400 hover:bg-[#242f44] hover:text-gray-200 text-left transition">
+                            <span><i class="fa-solid fa-cricket-bat-ball mr-2.5"></i> Cricket</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-0"></i>
+                        </button>
+                    </li>
+                    <li>
+                        <button onclick="switchSport('basketball')" id="btn-basketball" class="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-gray-400 hover:bg-[#242f44] hover:text-gray-200 text-left transition">
+                            <span><i class="fa-solid fa-basketball mr-2.5"></i> Basketball</span>
+                            <i class="fa-solid fa-chevron-right text-xs opacity-0"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="pt-4 border-t border-gray-800">
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Player Search</h3>
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-500 text-sm"></i>
+                    <input type="text" id="playerSearchInput" oninput="handlePlayerSearch()" placeholder="Type 'Gabriel Martinelli'..." class="w-full bg-[#121824] border border-gray-800 rounded-lg pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-cyan-500 placeholder-gray-600 transition">
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Content Dashboard Grid -->
+        <main class="flex-1 p-6 lg:p-8 space-y-6">
+            <div class="flex items-center justify-between">
+                <h1 id="dashboard-title" class="text-2xl font-bold tracking-tight">Football Overview</h1>
+                <span id="dashboard-subtitle" class="text-sm text-gray-400 bg-[#1a2232] px-3 py-1 rounded-md border border-gray-800">EPL 2025 Season</span>
+            </div>
+
+            <!-- Dynamic Grid Dashboard -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Main Stat Leaderboard (Dynamic) -->
+                <div class="bg-[#1a2232] rounded-xl p-5 border border-gray-800 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 id="leaderboard-card-1-title" class="font-bold text-gray-200 tracking-wide">Most Goals</h2>
+                            <i class="fa-solid fa-arrow-trend-up text-emerald-400 text-sm"></i>
+                        </div>
+                        <div id="leaderboard-card-1-list" class="space-y-3.5">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Secondary Disciplinary/Alternative Leaderboard (Dynamic) -->
+                <div class="bg-[#1a2232] rounded-xl p-5 border border-gray-800 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 id="leaderboard-card-2-title" class="font-bold text-gray-200 tracking-wide">Most Red Cards</h2>
+                            <i class="fa-solid fa-circle text-red-500 text-xs"></i>
+                        </div>
+                        <div id="leaderboard-card-2-list" class="space-y-3.5">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Dynamic Spotlight Player Profile Component -->
+                <div id="player-profile-card" class="bg-[#1a2232] rounded-xl border border-gray-800 shadow-xl overflow-hidden md:col-span-2 xl:col-span-1">
+                    <!-- Header Spotlight Banner -->
+                    <div id="player-hero-banner" class="bg-gradient-to-r from-red-900/60 to-red-950 p-5 flex items-center justify-between border-b border-gray-800">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-[#121824] rounded-full border-2 border-red-500 flex items-center justify-center overflow-hidden">
+                                <i class="fa-solid fa-user text-3xl text-gray-600 mt-2"></i>
+                            </div>
+                            <div>
+                                <h2 id="player-name" class="font-bold text-lg text-white">Gabriel Martinelli</h2>
+                                <p id="player-meta" class="text-xs text-gray-400"><span class="flag-icon">🇧🇷</span> Forward • Jersey #11</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span id="player-club" class="text-xs font-semibold uppercase tracking-wider bg-red-600/20 text-red-400 px-2.5 py-1 rounded border border-red-500/30">Arsenal</span>
+                        </div>
+                    </div>
+                    <!-- Player Grid Stats -->
+                    <div class="p-5">
+                        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Season Stats Summary</h3>
+                        <div id="player-stats-grid" class="grid grid-cols-2 gap-3">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
     </div>
-  </header>
 
-  <!-- Main -->
-  <main class="max-w-4xl mx-auto px-6 py-12">
-    <div class="bg-white shadow-xl rounded-xl p-8">
+    <!-- Embedded JavaScript Engine with Mock Data Layer -->
+    <script>
+        // Central Database Caching Layer
+        const sportsDataStore = {
+            football: {
+                title: "Football Overview",
+                subtitle: "EPL 2025 Season",
+                card1Title: "Most Goals",
+                card2Title: "Most Red Cards",
+                card1Data: [
+                    { name: "Erling Haaland", team: "Man City", metric: "32 Goals" },
+                    { name: "Mohamed Salah", team: "Liverpool", metric: "24 Goals" },
+                    { name: "Ollie Watkins", team: "Aston Villa", metric: "19 Goals" }
+                ],
+                card2Data: [
+                    { name: "Casemiro", team: "Man United", metric: "2 Red Cards" },
+                    { name: "Christian Nørgaard", team: "Brentford", metric: "1 Red Card" },
+                    { name: "Yves Bissouma", team: "Tottenham", metric: "1 Red Card" }
+                ],
+                spotlight: {
+                    name: "Gabriel Martinelli",
+                    meta: "🇧🇷 Forward • Jersey #11",
+                    club: "Arsenal",
+                    themeFrom: "from-red-900/60",
+                    themeTo: "to-red-950",
+                    themeBorder: "border-red-500",
+                    themeBadge: "bg-red-600/20 text-red-400 border-red-500/30",
+                    stats: [
+                        { label: "Appearances", value: "28" },
+                        { label: "Goals", value: "11" },
+                        { label: "Assists", value: "7" },
+                        { label: "Key Passes", value: "22" }
+                    ]
+                }
+            },
+            cricket: {
+                title: "Cricket Overview",
+                subtitle: "IPL 2025 Tournament",
+                card1Title: "Most Runs (Orange Cap)",
+                card2Title: "Most Wickets (Purple Cap)",
+                card1Data: [
+                    { name: "Virat Kohli", team: "RCB", metric: "741 Runs" },
+                    { name: "Ruturaj Gaikwad", team: "CSK", metric: "583 Runs" },
+                    { name: "Travis Head", team: "SRH", metric: "567 Runs" }
+                ],
+                card2Data: [
+                    { name: "Harshal Patel", team: "PBKS", metric: "24 Wickets" },
+                    { name: "Jasprit Bumrah", team: "MI", metric: "20 Wickets" },
+                    { name: "Varun Chakaravarthy", team: "KKR", metric: "19 Wickets" }
+                ],
+                spotlight: {
+                    name: "Virat Kohli",
+                    meta: "🇮🇳 Top-Order Batsman • Jersey #18",
+                    club: "RCB",
+                    themeFrom: "from-amber-900/60",
+                    themeTo: "to-amber-950",
+                    themeBorder: "border-amber-500",
+                    themeBadge: "bg-amber-600/20 text-amber-400 border-amber-500/30",
+                    stats: [
+                        { label: "Matches", value: "15" },
+                        { label: "Strike Rate", value: "154.7" },
+                        { label: "Average", value: "61.8" },
+                        { label: "Highest Score", value: "113*" }
+                    ]
+                }
+            },
+            basketball: {
+                title: "Basketball Overview",
+                subtitle: "NBA 2024/25 Regular Season",
+                card1Title: "Points Per Game (PPG)",
+                card2Title: "Assists Per Game (APG)",
+                card1Data: [
+                    { name: "Luka Dončić", team: "DAL", metric: "33.9 PPG" },
+                    { name: "Giannis Antetokounmpo", team: "MIL", metric: "30.4 PPG" },
+                    { name: "Shai Gilgeous-Alexander", team: "OKC", metric: "30.1 PPG" }
+                ],
+                card2Data: [
+                    { name: "Tyrese Haliburton", team: "IND", metric: "10.9 APG" },
+                    { name: "Luka Dončić", team: "DAL", metric: "9.8 APG" },
+                    { name: "Nikola Jokić", team: "DEN", metric: "9.0 APG" }
+                ],
+                spotlight: {
+                    name: "Stephen Curry",
+                    meta: "🇺🇸 Point Guard • Jersey #3",
+                    club: "Warriors",
+                    themeFrom: "from-blue-900/60",
+                    themeTo: "to-blue-950",
+                    themeBorder: "border-blue-400",
+                    themeBadge: "bg-blue-600/20 text-blue-400 border-blue-500/30",
+                    stats: [
+                        { label: "Games Played", value: "74" },
+                        { label: "PPG Average", value: "26.4" },
+                        { label: "3PT Made", value: "357" },
+                        { label: "Free Throw %", value: "92.3%" }
+                    ]
+                }
+            }
+        };
 
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">
-        Prepare for Your Interview with AI
-      </h2>
+        // Render Data Engine
+        function renderDashboard(sportKey) {
+            const data = sportsDataStore[sportKey];
+            
+            // Update Text Nodes
+            document.getElementById('dashboard-title').innerText = data.title;
+            document.getElementById('dashboard-subtitle').innerText = data.subtitle;
+            document.getElementById('leaderboard-card-1-title').innerText = data.card1Title;
+            document.getElementById('leaderboard-card-2-title').innerText = data.card2Title;
 
-      <p class="text-gray-600 mb-8">
-        Select a position or paste your job description to receive tailored interview questions, expectations, and guidance on how to answer them effectively.
-      </p>
+            // Render Leaderboard List 1
+            let list1HTML = '';
+            data.card1Data.forEach((player, i) => {
+                list1HTML += `
+                    <div class="flex items-center justify-between py-1.5 border-b border-gray-800/40 last:border-0">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm font-bold ${i===0?'text-cyan-400':i===1?'text-gray-400':'text-amber-600'} w-4">${i+1}</span>
+                            <div>
+                                <p class="text-sm font-semibold text-white">${player.name}</p>
+                                <p class="text-xs text-gray-500">${player.team}</p>
+                            </div>
+                        </div>
+                        <span class="text-sm font-bold text-gray-300 bg-[#121824] px-2 py-1 rounded border border-gray-800/80">${player.metric}</span>
+                    </div>`;
+            });
+            document.getElementById('leaderboard-card-1-list').innerHTML = list1HTML;
 
-      <form id="interviewForm" class="space-y-6">
+            // Render Leaderboard List 2
+            let list2HTML = '';
+            data.card2Data.forEach((player, i) => {
+                list2HTML += `
+                    <div class="flex items-center justify-between py-1.5 border-b border-gray-800/40 last:border-0">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm font-bold text-gray-500 w-4">${i+1}</span>
+                            <div>
+                                <p class="text-sm font-semibold text-white">${player.name}</p>
+                                <p class="text-xs text-gray-500">${player.team}</p>
+                            </div>
+                        </div>
+                        <span class="text-sm font-bold text-gray-400 bg-[#121824] px-2 py-1 rounded border border-gray-800/80">${player.metric}</span>
+                    </div>`;
+            });
+            document.getElementById('leaderboard-card-2-list').innerHTML = list2HTML;
 
-        <!-- Position -->
-        <div>
-          <label class="block font-semibold mb-2">Select Position</label>
-          <select id="position" class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500">
-            <option value="">-- Choose a position --</option>
-            <option value="Software Engineer">Software Engineer</option>
-            <option value="Frontend Developer">Frontend Developer</option>
-            <option value="Backend Developer">Backend Developer</option>
-            <option value="Data Analyst">Data Analyst</option>
-            <option value="Data Scientist">Data Scientist</option>
-            <option value="Product Manager">Product Manager</option>
-            <option value="Project Manager">Project Manager</option>
-            <option value="Business Analyst">Business Analyst</option>
-            <option value="Marketing Manager">Marketing Manager</option>
-            <option value="Sales Executive">Sales Executive</option>
-            <option value="HR Manager">HR Manager</option>
-            <option value="Customer Support">Customer Support</option>
-            <option value="Finance Officer">Finance Officer</option>
-            <option value="Operations Manager">Operations Manager</option>
-            <option value="UI/UX Designer">UI/UX Designer</option>
-          </select>
-        </div>
+            // Render Spotlight Profile Card
+            updatePlayerCard(data.spotlight);
+        }
 
-        <!-- CV Upload -->
-        <div>
-          <label class="block font-semibold mb-2">Upload CV (Optional)</label>
-          <input type="file" id="cvUpload"
-            class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
-            accept=".pdf,.doc,.docx">
-        </div>
+        function updatePlayerCard(profile) {
+            document.getElementById('player-name').innerText = profile.name;
+            document.getElementById('player-meta').innerHTML = profile.meta;
+            document.getElementById('player-club').innerText = profile.club;
+            
+            // Manage Dynamic Team Colors classes
+            const banner = document.getElementById('player-hero-banner');
+            banner.className = `bg-gradient-to-r ${profile.themeFrom} ${profile.themeTo} p-5 flex items-center justify-between border-b border-gray-800`;
+            
+            const badge = document.getElementById('player-club');
+            badge.className = `text-xs font-semibold uppercase tracking-wider ${profile.themeBadge} px-2.5 py-1 rounded border`;
 
-        <!-- Job Description -->
-        <div>
-          <label class="block font-semibold mb-2">Job Description</label>
-          <textarea id="jobDescription" rows="5"
-            placeholder="Paste job description here..."
-            class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500"></textarea>
-        </div>
+            // Build Stats Fields
+            let statsHTML = '';
+            profile.stats.forEach(stat => {
+                statsHTML += `
+                    <div class="bg-[#121824] p-3 rounded-lg border border-gray-800/80 text-center">
+                        <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">${stat.label}</p>
+                        <p class="text-lg font-bold text-white mt-0.5">${profile.name === 'Gabriel Martinelli' && stat.label === 'Goals' ? '<span class="text-cyan-400">' + stat.value + '</span>' : stat.value}</p>
+                    </div>`;
+            });
+            document.getElementById('player-stats-grid').innerHTML = statsHTML;
+        }
 
-        <!-- Button -->
-        <button type="button" id="prepareBtn"
-          class="w-full bg-blue-600 text-white font-semibold p-3 rounded-lg hover:bg-blue-700 transition">
-          Generate Interview Prep
-        </button>
+        // Navigation Sidebar Controller
+        function switchSport(sportKey) {
+            const sports = ['football', 'cricket', 'basketball'];
+            sports.forEach(s => {
+                const btn = document.getElementById(`btn-${s}`);
+                const arrow = btn.querySelector('.fa-chevron-right');
+                if (s === sportKey) {
+                    btn.className = "w-full flex items-center justify-between px-4 py-2.5 rounded-lg bg-cyan-900/40 text-cyan-400 font-medium border border-cyan-800/50 text-left transition";
+                    arrow.classList.remove('opacity-0');
+                } else {
+                    btn.className = "w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-gray-400 hover:bg-[#242f44] hover:text-gray-200 text-left transition";
+                    arrow.classList.add('opacity-0');
+                }
+            });
+            renderDashboard(sportKey);
+        }
 
-      </form>
+        // User Search Bar Controller
+        function handlePlayerSearch() {
+            const input = document.getElementById('playerSearchInput').value.toLowerCase().trim();
+            
+            // Trick: If user searches for Martinelli specifically, swap to football context automatically
+            if (input.includes('gabriel') || input.includes('martinelli') || input.includes('gabriel martinelli')) {
+                switchSport('football');
+            } 
+            else if (input.includes('virat') || input.includes('kohli')) {
+                switchSport('cricket');
+            }
+            else if (input.includes('stephen') || input.includes('curry') || input.includes('steph')) {
+                switchSport('basketball');
+            }
+        }
 
-      <!-- Loading -->
-      <div id="loading" class="hidden mt-8 text-blue-600 font-semibold">
-        Analyzing job description...
-      </div>
-
-      <!-- AI Output -->
-      <div id="aiResponse"
-        class="hidden mt-10 bg-gray-100 p-6 rounded-xl shadow-inner">
-      </div>
-
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-white mt-12 py-6 text-center text-gray-500 shadow-inner">
-    © 2026 AI Interview Coach. All rights reserved.
-  </footer>
-
-  <!-- Script -->
-  <script src="script.js"></script>
+        // Initialize App on Load
+        window.onload = () => { renderDashboard('football'); };
+    </script>
 </body>
 </html>
