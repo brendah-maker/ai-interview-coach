@@ -34,9 +34,8 @@
 </head>
 <body class="flex min-h-screen">
 
-    <!-- AD SCRIPTS: POPUNDER, IN-PAGE BANNER, VIGNETTE -->
+    <!-- GLOBAL AD SCRIPTS (POPUNDER & VIGNETTE) -->
     <script>(function(s){s.dataset.zone='11029806',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-    <script>(function(s){s.dataset.zone='11029808',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     <script>(function(s){s.dataset.zone='11029809',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
     <!-- Sidebar Overlay -->
@@ -44,11 +43,11 @@
 
     <!-- Sidebar -->
     <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-64 bg-white border-r border-slate-200 flex flex-col z-50 -translate-x-full lg:translate-x-0 transition-transform">
-        <div class="p-8 border-b border-slate-100 hidden lg:block">
+        <div class="p-8 border-b border-slate-100 hidden lg:block text-center">
             <h1 class="text-2xl font-black text-indigo-600 italic leading-none">STAT<span class="text-slate-900">FOOTBALL</span></h1>
         </div>
         <nav id="leagueNav" class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-1 pt-20 lg:pt-4"></nav>
-        <div class="p-4 border-t border-slate-100 bg-slate-50 text-center text-[10px] font-bold text-slate-300">ADVERTISEMENT</div>
+        <div class="p-4 border-t border-slate-100 bg-slate-50 text-center text-[10px] font-bold text-slate-300 uppercase">Pro Analytics Hub</div>
     </aside>
 
     <!-- Main Content -->
@@ -90,6 +89,7 @@
 
         <div class="px-4 lg:px-8 py-6 space-y-8">
             <div id="view-summary" class="space-y-6">
+                <!-- STANDINGS TABLE -->
                 <section class="bg-white rounded-3xl border border-slate-200 overflow-hidden card-shadow">
                     <div class="overflow-x-auto no-scrollbar">
                         <table class="w-full text-left min-w-[650px]">
@@ -102,6 +102,12 @@
                     <button onclick="toggleStandings()" class="w-full py-4 text-[10px] font-black text-indigo-600 uppercase border-t border-slate-100 hover:bg-slate-50">Toggle Full Table</button>
                 </section>
 
+                <!-- HIGHLIGHTED AREA: IN-PAGE BANNER AD (RED BOX 1) -->
+                <div class="bg-white p-2 rounded-3xl border border-slate-200 text-center overflow-hidden">
+                    <script>(function(s){s.dataset.zone='11029808',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+                </div>
+
+                <!-- STATISTICS GRID -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                     <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Top Goals <i class="fa-solid fa-fire text-orange-400"></i></h4><div id="topScorers" class="space-y-1"></div></div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 card-shadow"><h4 class="text-[9px] font-black text-slate-400 uppercase mb-3 flex justify-between">Assists <i class="fa-solid fa-magic text-indigo-400"></i></h4><div id="topAssists" class="space-y-1"></div></div>
@@ -120,7 +126,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-4 space-y-6">
                         <div class="bg-white p-6 rounded-3xl border border-slate-200 card-shadow">
-                            <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4">Top Defenders (Lowest GA)</h4>
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4">Top Defenders</h4>
                             <div id="bestDefenders" class="space-y-3"></div>
                         </div>
                     </div>
@@ -139,11 +145,12 @@
         </div>
     </main>
 
+    <!-- H2H Modal -->
     <div id="detailsModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
         <div class="bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl relative">
-            <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-900 p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 text-xl"><i class="fa-solid fa-xmark text-xl"></i></button>
             <div class="p-8 text-center border-b border-slate-50">
-                <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight">H2H Match History</h3>
+                <h3 class="text-xl font-black text-slate-900 uppercase">Head-to-Head History</h3>
             </div>
             <div id="h2hList" class="p-6 max-h-[450px] overflow-y-auto no-scrollbar space-y-3"></div>
         </div>
@@ -245,7 +252,7 @@
                 
                 html += `<div class="bg-white p-5 rounded-3xl border border-slate-100 card-shadow text-center">
                     <div class="flex justify-between items-center mb-4"><span class="text-[8px] font-bold text-slate-300 uppercase">${m.fixture.status.long}</span>${isLive ? '<span class="text-emerald-500 text-[8px] font-black animate-pulse">LIVE</span>' : ''}</div>
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center px-2">
                         <div class="flex-1 overflow-hidden"><img src="${m.teams.home.logo}" class="w-8 h-8 mx-auto mb-1"><p class="text-[9px] font-bold truncate">${m.teams.home.name}</p></div>
                         <div class="px-2 text-xl font-black">${score}</div>
                         <div class="flex-1 overflow-hidden"><img src="${m.teams.away.logo}" class="w-8 h-8 mx-auto mb-1"><p class="text-[9px] font-bold truncate">${m.teams.away.name}</p></div>
@@ -258,13 +265,13 @@
 
         async function loadPlayersData() {
             const top = await api(`players/topscorers?league=${state.leagueId}&season=${state.season}`);
-            document.getElementById('playerFullTable').innerHTML = top.map(p => `<tr class="hover:bg-slate-50">
+            document.getElementById('playerFullTable').innerHTML = top.map(p => `<tr>
                 <td class="px-6 py-4 flex items-center space-x-3"><img src="${p.player.photo}" class="w-8 h-8 rounded-lg"><span class="font-bold text-slate-800 text-xs">${p.player.name}</span></td>
                 <td class="px-4 py-4 text-xs font-medium text-slate-500">${p.statistics[0].team.name}</td>
                 <td class="px-4 py-4 text-center font-black text-indigo-600 text-xs">${p.statistics[0].goals.total}</td>
                 <td class="px-4 py-4 text-center"><span class="bg-indigo-50 text-indigo-600 px-2 py-1 rounded text-[10px] font-black">${p.statistics[0].games.rating || '---'}</span></td></tr>`).join('');
             
-            document.getElementById('bestDefenders').innerHTML = state.standings.slice(0,5).map(t => `<div class="flex justify-between items-center text-[10px] p-3 bg-slate-50 rounded-2xl mb-2"><span class="font-bold text-slate-700">${t.team.name}</span><span class="font-black text-emerald-600">${t.all.goals.against} Conceded</span></div>`).join('');
+            document.getElementById('bestDefenders').innerHTML = state.standings.slice(0,5).map(t => `<div class="flex justify-between items-center text-[10px] p-3 bg-slate-50 rounded-2xl mb-2"><span class="font-bold text-slate-700">${t.team.name}</span><span class="font-black text-emerald-600">${t.all.goals.against} GA</span></div>`).join('');
         }
 
         async function loadRounds() {
