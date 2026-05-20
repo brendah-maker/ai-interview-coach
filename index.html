@@ -99,15 +99,46 @@
                 </div>
 
                 <!-- USEFUL ADDITION: BLOG TEASER -->
-  <div class="bg-indigo-600 rounded-3xl p-6 text-white card-shadow flex flex-col justify-between">
-    <!-- Wrap the content in a link so the whole card is clickable -->
-    <a href="articles/ten-moments.html" class="group block h-full">
-        <div>
-            <span class="text-[10px] font-black uppercase bg-white/20 px-2 py-1 rounded">Editorial Pick</span>
-            <h4 class="text-xl font-bold mt-4 leading-tight group-hover:underline">
-                The 10 Moments that won Arsenal the 2025/26 Premier League title
-            </h4>
-        </div>
+<!-- This grid creates two columns on tablets/desktop, and stacks them on mobile -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- LEFT BOX: Editorial Pick (Indigo & Clickable) -->
+    <div class="bg-indigo-600 rounded-3xl p-8 text-white shadow-xl flex flex-col justify-between hover:scale-[1.02] transition-transform duration-200">
+        <a href="articles/road-to-glory.html" class="group block h-full">
+            <div>
+                <span class="text-[10px] font-black uppercase bg-white/20 px-2 py-1 rounded">Editorial Pick</span>
+                <h4 class="text-2xl font-bold mt-4 leading-tight group-hover:underline">
+                    The 10 Moments that won Arsenal the 2025/26 Premier League title
+                </h4>
+            </div>
+            <p class="mt-10 text-xs font-black uppercase tracking-widest text-white underline decoration-2 underline-offset-4 opacity-80 group-hover:opacity-100">
+                Read Full Blog →
+            </p>
+        </a>
+    </div>
+
+    <!-- RIGHT BOX: Transfer Rumors (White & Clean) -->
+    <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+        <h4 class="text-[10px] font-black uppercase text-slate-400 mb-6 tracking-widest">Transfer Rumors</h4>
+        <ul class="space-y-5">
+            <li class="flex items-start space-x-3">
+                <div class="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+                <p class="text-sm font-bold text-slate-700 leading-snug">Man City eyeing Bournemouth's Junior Kroupi for record-breaking fee</p>
+            </li>
+            <li class="flex items-start space-x-3">
+                <div class="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+                <p class="text-sm font-bold text-slate-700 leading-snug">Mikel Arteta contract talks stalled amid PSG interest</p>
+            </li>
+            <li class="flex items-start space-x-3">
+                <div class="w-2 h-2 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
+                <p class="text-sm font-bold text-slate-700 leading-snug">Arsenal monitoring Eberechi Eze's fitness ahead of CL final</p>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+                
         
         <!-- Changed text color to white so it is visible -->
         <p class="mt-6 text-xs font-black uppercase tracking-widest text-white underline decoration-2 underline-offset-4 group-hover:text-slate-200 transition">
