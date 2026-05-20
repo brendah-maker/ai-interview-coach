@@ -3,59 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article Title | StatFootball</title>
+    <title>Blogs | StatFootball</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; line-height: 1.6; }
-        .prose h2 { font-weight: 800; font-size: 1.75rem; color: #0f172a; margin-top: 2.5rem; margin-bottom: 1rem; }
-        .prose p { margin-bottom: 1.5rem; color: #475569; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #1e293b; }
+        
+        /* Matching the sketch: Simple boxes with borders */
+        .sketch-box {
+            border: 2px solid #1e293b;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .sketch-box:hover {
+            background-color: #f8fafc;
+            border-color: #4f46e5;
+        }
+
+        /* Title underline style from sketch */
+        .sketch-title {
+            display: inline-block;
+            border-bottom: 3px solid #1e293b;
+            padding-bottom: 2px;
+            margin-bottom: 40px;
+        }
     </style>
 </head>
-<body>
+<body class="min-h-screen">
 
-    <header class="bg-white border-b border-slate-100 py-6 sticky top-0 z-50 backdrop-blur-md">
+    <!-- Navigation -->
+    <header class="bg-white border-b border-slate-100 py-6 sticky top-0 z-50">
         <div class="max-w-5xl mx-auto px-6 flex justify-between items-center">
-            <!-- FIXED LINK TO HOME -->
-            <a href="../index.html" class="text-2xl font-black text-indigo-600 italic">STAT<span class="text-slate-900">FOOTBALL</span></a>
+            <a href="index.html" class="text-2xl font-black text-indigo-600 italic">STAT<span class="text-slate-900">FOOTBALL</span></a>
             <nav class="flex space-x-8 items-center">
-                <a href="../index.html" class="text-sm font-bold text-slate-400 hover:text-indigo-600 transition">Live Dashboard</a>
-                <a href="../blogs.html" class="text-sm font-bold text-slate-400 hover:text-indigo-600 transition">Blogs</a>
+                <a href="index.html" class="text-sm font-bold text-slate-400 hover:text-indigo-600 transition">Live Dashboard</a>
+                <span class="text-sm font-black text-indigo-600 border-b-2 border-indigo-600 pb-1">Blogs</span>
             </nav>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 py-10">
-        <article class="bg-white rounded-[2.5rem] border border-slate-100 shadow-2xl overflow-hidden">
-            
-            <!-- Cover Image -->
-            <div class="relative h-[400px]">
-                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=2000" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60"></div>
-                <div class="absolute bottom-10 left-10">
-                    <h1 class="text-white text-4xl font-black">Your Article Title Here</h1>
-                </div>
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        
+        <!-- Section Title (Matches your "Blogs" sketch) -->
+        <h1 class="text-4xl font-black sketch-title">Blogs</h1>
+
+        <!-- Article List (The Boxed Layout from your sketch) -->
+        <div class="mt-4">
+
+            <!-- Article 1 -->
+            <div class="sketch-box">
+                <h2 class="text-xl font-bold text-slate-800">Arsenal Crowned Premier League Champions</h2>
+                <a href="articles/arsenal-champions.html" class="text-indigo-600 font-black uppercase text-xs tracking-widest hover:underline">
+                    read more
+                </a>
             </div>
 
-            <div class="p-8 md:p-14 prose max-w-none">
-                <p class="text-xl italic border-l-4 border-indigo-500 pl-6 mb-10">Short summary of the story goes here...</p>
-                
-                <h2>First Heading</h2>
-                <p>Start writing your amazing football analysis here.</p>
-
-                <h2>Second Heading</h2>
-                <p>Add more details and stats to keep your readers engaged.</p>
-
-                <!-- Back button -->
-                <div class="mt-16 pt-10 border-t border-slate-100">
-                    <a href="../blogs.html" class="text-indigo-600 font-black text-sm uppercase tracking-widest">← Back to all blogs</a>
-                </div>
+            <!-- Article 2 -->
+            <div class="sketch-box">
+                <h2 class="text-xl font-bold text-slate-800">Bournemouth vs Man City: Tactical Analysis</h2>
+                <a href="#" class="text-indigo-600 font-black uppercase text-xs tracking-widest hover:underline">
+                    read more
+                </a>
             </div>
-        </article>
+
+            <!-- Article 3 -->
+            <div class="sketch-box">
+                <h2 class="text-xl font-bold text-slate-800">The 10 Moments that Won the 2025/26 Title</h2>
+                <a href="#" class="text-indigo-600 font-black uppercase text-xs tracking-widest hover:underline">
+                    read more
+                </a>
+            </div>
+
+            <!-- Article 4 -->
+            <div class="sketch-box">
+                <h2 class="text-xl font-bold text-slate-800">Transfer News: City eyeing Kroupi</h2>
+                <a href="#" class="text-indigo-600 font-black uppercase text-xs tracking-widest hover:underline">
+                    read more
+                </a>
+            </div>
+
+        </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-100 py-10 text-center">
+    <footer class="py-10 text-center border-t border-slate-100 mt-20">
         <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold">&copy; 2026 StatFootball</p>
     </footer>
 
