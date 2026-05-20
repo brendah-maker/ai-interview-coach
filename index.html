@@ -99,24 +99,22 @@
                 </div>
 
                 <!-- USEFUL ADDITION: BLOG TEASER -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-indigo-600 rounded-3xl p-6 text-white card-shadow flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-black uppercase bg-white/20 px-2 py-1 rounded">Editorial Pick</span>
-                            <h4 class="text-xl font-bold mt-4 leading-tight">The 10 Moments that won Arsenal the 2025/26 Champions League title</h4>
-                        </div>
-                        <a href="articles/road-to-glory.html" class="text-indigo-600 font-black uppercase text-xs tracking-widest hover:underline">
-                    read more
-                </a>
-                    </div>
-                    <div class="bg-white border border-slate-200 rounded-3xl p-6 card-shadow">
-                        <h4 class="text-[10px] font-black uppercase text-slate-400 mb-4">Transfer Rumors</h4>
-                        <ul class="space-y-4">
-                            <li class="flex items-center space-x-3"><div class="w-2 h-2 rounded-full bg-indigo-500"></div><p class="text-xs font-bold text-slate-700">Man City eyeing Kroupi for record fee</p></li>
-                            <li class="flex items-center space-x-3"><div class="w-2 h-2 rounded-full bg-indigo-500"></div><p class="text-xs font-bold text-slate-700">Mikel Arteta contract talks stalled</p></li>
-                        </ul>
-                    </div>
-                </div>
+  <div class="bg-indigo-600 rounded-3xl p-6 text-white card-shadow flex flex-col justify-between">
+    <!-- Wrap the content in a link so the whole card is clickable -->
+    <a href="articles/ten-moments.html" class="group block h-full">
+        <div>
+            <span class="text-[10px] font-black uppercase bg-white/20 px-2 py-1 rounded">Editorial Pick</span>
+            <h4 class="text-xl font-bold mt-4 leading-tight group-hover:underline">
+                The 10 Moments that won Arsenal the 2025/26 Premier League title
+            </h4>
+        </div>
+        
+        <!-- Changed text color to white so it is visible -->
+        <p class="mt-6 text-xs font-black uppercase tracking-widest text-white underline decoration-2 underline-offset-4 group-hover:text-slate-200 transition">
+            Read Full Blog →
+        </p>
+    </a>
+</div>
 
                 <!-- STATISTICS GRID -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
